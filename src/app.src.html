@@ -8,156 +8,195 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Speelgoed">
-<meta name="theme-color" content="#FFF6EC">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#FFF6EC;--card:#fff;--ink:#2A2340;--muted:#7B7391;--line:#EFE4D6;--coral:#FF6B4A;--coral2:#FFE4DB;--teal:#16A394;--teal2:#D5F3EE;--sun:#F5A800;--sun2:#FFF0C4;--plum:#7A5AF8;--plum2:#ECE6FF;--r:18px;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+:root{
+  --bg:#F2F2F7;--surface:#FFFFFF;--surface2:#F8F8FB;--fill:#EDEDF2;--field:#F4F4F8;--ink:#0B0B14;--ink2:#3A3A46;--muted:#7A7A88;--line:rgba(15,15,30,.07);
+  --accent:#5046E5;--accent2:#8B5CF6;--accent-soft:rgba(80,70,229,.10);--accent-ink:#4338CA;
+  --grad:linear-gradient(135deg,#5046E5 0%,#8B5CF6 100%);--grad-dark:linear-gradient(135deg,#14142B 0%,#2E2A6B 100%);
+  --bak:#F97316;--bak-soft:rgba(249,115,22,.12);--doos:#D69E00;--doos-soft:rgba(214,158,0,.14);--loc:#0EA5A4;--loc-soft:rgba(14,165,164,.12);
+  --ok:#10B981;--ok-soft:rgba(16,185,129,.12);--ok-ink:#047857;--danger:#E5484D;--danger-soft:rgba(229,72,77,.1);--warn-soft:rgba(245,158,11,.14);--warn-ink:#92400E;
+  --shadow:0 1px 2px rgba(15,15,30,.04),0 8px 24px -12px rgba(15,15,30,.12);
+  --r:20px;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  /* legacy aliases used in markup */
+  --coral:var(--accent);--coral2:var(--accent-soft);--teal:var(--loc);--teal2:var(--ok-soft);--sun2:var(--warn-soft);--plum2:var(--accent-soft);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#000000;--surface:#1C1C1E;--surface2:#232326;--fill:#2C2C30;--field:#232326;--ink:#F5F5F7;--ink2:#D4D4DA;--muted:#9A9AA5;--line:rgba(255,255,255,.08);
+  --accent:#7C74FF;--accent-soft:rgba(124,116,255,.18);--accent-ink:#B4AEFF;--grad:linear-gradient(135deg,#5B52F0 0%,#9D6BFF 100%);--grad-dark:linear-gradient(135deg,#232046 0%,#3B3590 100%);
+  --ok-ink:#5EE0B5;--warn-ink:#FCD34D;--shadow:0 1px 0 rgba(255,255,255,.04)}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-.btn svg{width:21px;height:21px;flex:none}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-size:16px;font-weight:600}
-body{min-height:100vh;padding-bottom:calc(92px + var(--sab))}
-button,input,textarea,select{font:inherit;color:inherit}
-header.top{position:sticky;top:0;z-index:20;background:rgba(255,246,236,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:calc(10px + var(--sat)) 16px 10px;display:flex;align-items:center;gap:10px}
-header.top h1{font-size:23px;font-weight:900;margin:0;flex:1;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.iconbtn{width:42px;height:42px;flex:none;border-radius:14px;border:0;background:#fff;box-shadow:0 1px 0 var(--line),0 4px 14px -8px rgba(42,35,64,.3);display:grid;place-items:center;font-size:20px;color:var(--ink);cursor:pointer}
-.iconbtn svg{width:22px;height:22px}
-.iconbtn.coral{background:var(--coral);color:#fff}
-main{padding:6px 16px 24px;max-width:760px;margin:0 auto}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:flex-end;padding:6px 4px calc(6px + var(--sab))}
-nav.tabs button{flex:1;border:0;background:none;font-size:11px;font-weight:800;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer}
-nav.tabs button svg{width:25px;height:25px}
-nav.tabs button.on{color:var(--coral)}
-nav.tabs button.fab span.ring{width:60px;height:60px;margin-top:-26px;border-radius:50%;background:var(--coral);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(255,107,74,.7);border:4px solid #fff}
-nav.tabs button.fab svg{width:28px;height:28px}
-.card{background:#fff;border-radius:var(--r);padding:14px;box-shadow:0 1px 0 var(--line),0 8px 24px -16px rgba(42,35,64,.3);margin-bottom:12px}
-.card h2{margin:0 0 8px;font-size:18px;font-weight:900}
-.card h3{margin:0 0 6px;font-size:15px;font-weight:900}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,"Segoe UI",sans-serif;font-size:16px;font-weight:400;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+body{min-height:100vh;padding-bottom:calc(96px + var(--sab))}
+button,input,textarea,select{font:inherit;color:inherit;letter-spacing:inherit}
+b,strong{font-weight:600}
+svg.i{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:calc(12px + var(--sat)) 20px 10px;display:flex;align-items:center;gap:10px;border-bottom:.5px solid transparent}
+header.top h1{font-size:30px;font-weight:700;margin:0;flex:1;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+#back:not([hidden])+h1{font-size:20px;letter-spacing:-.02em}
+.iconbtn{width:38px;height:38px;flex:none;border-radius:50%;border:0;background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--ink);cursor:pointer}
+.iconbtn svg{width:20px;height:20px}
+.iconbtn.coral{background:var(--grad);color:#fff;box-shadow:0 6px 16px -6px rgba(80,70,229,.6)}
+main{padding:6px 20px 28px;max-width:760px;margin:0 auto}
+nav.tabs{position:fixed;left:12px;right:12px;bottom:calc(10px + var(--sab));z-index:30;max-width:520px;margin:0 auto;background:color-mix(in srgb,var(--surface) 82%,transparent);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);border:.5px solid var(--line);border-radius:28px;display:flex;justify-content:space-around;align-items:center;padding:6px;box-shadow:0 12px 40px -12px rgba(15,15,30,.28)}
+nav.tabs button{flex:1;border:0;background:none;font-size:10.5px;font-weight:500;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer;border-radius:20px;transition:color .15s}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button.on{color:var(--accent)}
+nav.tabs button.fab{color:var(--ink2)}
+nav.tabs button.fab span.ring{width:48px;height:48px;border-radius:18px;background:var(--grad);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(80,70,229,.65);margin-bottom:1px}
+nav.tabs button.fab svg{width:24px;height:24px}
+nav.tabs button.fab.on{color:var(--accent)}
+.card{background:var(--surface);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.card h2{margin:0 0 6px;font-size:19px;font-weight:700;letter-spacing:-.025em}
+.card h3,main h3{margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .muted{color:var(--muted)}
-.small{font-size:13px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 16px;font-weight:800;font-size:16px;background:#F3ECE3;color:var(--ink);cursor:pointer;text-decoration:none;min-height:48px}
+.small{font-size:13.5px;line-height:1.45}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 16px;font-weight:600;font-size:16px;background:var(--fill);color:var(--ink);cursor:pointer;text-decoration:none;min-height:48px;transition:transform .08s,opacity .15s}
+.btn:active,.big-act:active,.li:active,.tile:active{transform:scale(.98)}
+.btn svg{width:20px;height:20px;flex:none}
 .btn.block{width:100%}
-.btn.primary{background:var(--coral);color:#fff}
-.btn.teal{background:var(--teal);color:#fff}
-.btn.plum{background:var(--plum);color:#fff}
-.btn.soft{background:var(--coral2);color:#C2391A}
-.btn.danger{background:#FFE1E1;color:#C42525}
-.btn.sm{min-height:38px;padding:8px 12px;font-size:14px;border-radius:12px}
-.btn:disabled{opacity:.5}
+.btn.primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px -10px rgba(80,70,229,.7)}
+.btn.teal{background:var(--ink);color:var(--bg)}
+.btn.plum{background:var(--accent);color:#fff}
+.btn.soft{background:var(--accent-soft);color:var(--accent-ink)}
+.btn.danger{background:var(--danger-soft);color:var(--danger)}
+.btn.sm{min-height:38px;padding:8px 13px;font-size:14.5px;border-radius:12px}
+.btn:disabled{opacity:.45}
 .row{display:flex;gap:10px;align-items:center}
 .row.wrap{flex-wrap:wrap}
 .stack>*+*{margin-top:10px}
 .grow{flex:1;min-width:0}
-.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.big-act{border:0;border-radius:20px;padding:16px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:112px;font-weight:900;font-size:17px}
-.big-act small{font-weight:700;font-size:12.5px;opacity:.85}
-.big-act .ic{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.3);display:grid;place-items:center}
-.big-act .ic svg{width:24px;height:24px}
-.big-act.coral{background:var(--coral);color:#fff}
-.big-act.teal{background:var(--teal);color:#fff}
-label.f{display:block;font-size:13px;font-weight:800;color:var(--muted);margin:12px 0 6px}
-.input,textarea.input,select.input{width:100%;border:2px solid var(--line);background:#FFFCF8;border-radius:14px;padding:12px 14px;font-size:16px;outline:none}
-.input:focus{border-color:var(--coral)}
-textarea.input{min-height:84px;resize:vertical}
+.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.big-act{position:relative;overflow:hidden;border:0;border-radius:24px;padding:16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:132px;font-weight:700;font-size:18px;letter-spacing:-.02em;color:#fff;justify-content:flex-end}
+.big-act small{font-weight:500;font-size:12.5px;opacity:.78;letter-spacing:0}
+.big-act .ic{position:absolute;top:14px;left:14px;width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.18);display:grid;place-items:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.big-act .ic svg{width:22px;height:22px}
+.big-act:after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12)}
+.big-act.coral{background:var(--grad);box-shadow:0 14px 30px -14px rgba(80,70,229,.75)}
+.big-act.teal{background:var(--grad-dark);box-shadow:0 14px 30px -16px rgba(20,20,43,.7)}
+.big-act.wide{width:100%;min-height:0;flex-direction:row;align-items:center;gap:14px;padding:14px 16px;font-size:16.5px;margin-bottom:14px}
+.big-act.wide .ic{position:static;flex:none}
+.big-act.wide:after{display:none}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:16px 0 7px;letter-spacing:.01em}
+.input,textarea.input,select.input{width:100%;border:1.5px solid transparent;background:var(--field);border-radius:14px;padding:13px 14px;font-size:16px;outline:none;transition:border-color .15s,background .15s}
+.input:focus{border-color:var(--accent);background:var(--surface)}
+.input::placeholder{color:var(--muted);opacity:.8}
+textarea.input{min-height:88px;resize:vertical}
 .search{position:relative}
-.search input{padding-left:44px;background:#fff;border-color:#fff;box-shadow:0 1px 0 var(--line),0 8px 24px -16px rgba(42,35,64,.35);height:54px;font-size:17px}
-.search svg{position:absolute;left:14px;top:15px;width:24px;height:24px;color:var(--muted)}
-.seg{display:flex;background:#F1E8DD;border-radius:14px;padding:4px;gap:4px}
-.seg button{flex:1;border:0;background:none;border-radius:11px;padding:9px 6px;font-weight:800;font-size:14px;color:var(--muted);cursor:pointer}
-.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px -4px rgba(0,0,0,.25)}
-.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.search input{padding-left:44px;background:var(--surface);box-shadow:var(--shadow);height:52px;font-size:17px;border-radius:16px}
+.search svg{position:absolute;left:15px;top:15px;width:22px;height:22px;color:var(--muted)}
+.seg{display:flex;background:var(--fill);border-radius:12px;padding:3px;gap:2px}
+.seg button{flex:1;border:0;background:none;border-radius:10px;padding:8px 6px;font-weight:500;font-size:14px;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.seg button.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:560px){.grid2{grid-template-columns:repeat(3,1fr)}}
-.tile{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 8px 20px -16px rgba(42,35,64,.35);cursor:pointer;border:0;padding:0;text-align:left}
-.tile .ph{aspect-ratio:1;background:#F3EADF;display:grid;place-items:center;font-size:34px}
+.tile{background:var(--surface);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;border:0;padding:6px;text-align:left;transition:transform .08s}
+.tile .ph{aspect-ratio:1;background:var(--fill);display:grid;place-items:center;color:var(--muted);border-radius:15px;overflow:hidden}
+.tile .ph svg{width:36px;height:36px;opacity:.6}
 .tile .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.tile .tx{padding:8px 10px 10px}
-.tile .nm{font-weight:900;font-size:15px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tile .lc{font-size:12px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.li{display:flex;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:10px;margin-bottom:8px;box-shadow:0 1px 0 var(--line),0 8px 20px -18px rgba(42,35,64,.35);cursor:pointer;width:100%;border:0;text-align:left}
-.li .th{width:58px;height:58px;border-radius:12px;background:#F3EADF;flex:none;overflow:hidden;display:grid;place-items:center;font-size:26px}
+.tile .tx{padding:8px 6px 6px}
+.tile .nm{font-weight:600;font-size:15px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.015em}
+.tile .lc{font-size:12.5px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:18px;padding:10px 12px 10px 10px;margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;width:100%;border:0;text-align:left;transition:transform .08s}
+.li .th{width:56px;height:56px;border-radius:14px;background:var(--fill);flex:none;overflow:hidden;display:grid;place-items:center;color:var(--muted)}
+.li .th svg{width:26px;height:26px}
 .li .th img{width:100%;height:100%;object-fit:cover}
-.li .nm{font-weight:900;font-size:16px;line-height:1.2}
-.li .sub{font-size:12.5px;color:var(--muted);margin-top:3px}
-.li .chev{color:#C9BFB2;font-size:22px}
-.code{display:inline-flex;align-items:center;gap:4px;font-weight:900;font-size:12.5px;padding:3px 8px;border-radius:8px;letter-spacing:.3px;white-space:nowrap}
-.code.bak{background:var(--coral2);color:#C2391A}
-.code.doos{background:var(--sun2);color:#8A5D00}
-.code.locatie{background:var(--teal2);color:#0B6F64}
-.path{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:13px;color:var(--muted)}
-.path a{color:var(--ink);text-decoration:none;font-weight:800}
-.path .sep{opacity:.5}
-.hero-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:#F3EADF;display:block}
-.photos{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;margin:0 -16px;padding-left:16px;padding-right:16px}
-.photos img{height:250px;width:auto;max-width:86%;border-radius:16px;scroll-snap-align:start;object-fit:cover;background:#F3EADF}
+.li .nm{font-weight:600;font-size:16px;line-height:1.25;letter-spacing:-.015em}
+.li .sub{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.35}
+.li .chev{color:var(--muted);opacity:.5;font-size:22px;font-weight:300}
+.code{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:12px;padding:3px 9px 3px 7px;border-radius:999px;letter-spacing:.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.code svg{width:13px;height:13px}
+.code.bak{background:var(--bak-soft);color:var(--bak)}
+.code.doos{background:var(--doos-soft);color:var(--doos)}
+.code.locatie{background:var(--loc-soft);color:var(--loc)}
+.path{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:14px;color:var(--muted)}
+.path a{color:var(--accent);text-decoration:none;font-weight:500}
+.path .sep{opacity:.45}
+.hero-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:24px;background:var(--fill);display:block}
+.photos{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;margin:0 -20px;padding-left:20px;padding-right:20px;scrollbar-width:none}
+.photos::-webkit-scrollbar{display:none}
+.photos img{height:280px;width:auto;max-width:86%;border-radius:22px;scroll-snap-align:start;object-fit:cover;background:var(--fill)}
 .ph-edit{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.ph-edit .p{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#F3EADF}
+.ph-edit .p{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--fill)}
 .ph-edit .p img{width:100%;height:100%;object-fit:cover}
-.ph-edit .p button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer}
-.ph-edit .add{aspect-ratio:1;border-radius:12px;border:2px dashed #E2D4C3;display:grid;place-items:center;text-align:center;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;background:#FFFCF8}
-.ph-edit .add b{display:block;font-size:24px}
-.where{border-radius:var(--r);padding:14px;background:linear-gradient(135deg,var(--teal) 0%,#0E8C80 100%);color:#fff;display:flex;gap:12px;align-items:center;cursor:pointer}
-.where .th{width:74px;height:74px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.2);flex:none;display:grid;place-items:center;font-size:30px}
+.ph-edit .p button{position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font-size:12px;cursor:pointer}
+.ph-edit .add{aspect-ratio:1;border-radius:14px;border:1.5px dashed color-mix(in srgb,var(--muted) 45%,transparent);display:grid;place-items:center;text-align:center;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;background:var(--surface)}
+.ph-edit .add b{display:block;margin:0 auto 4px;width:24px;height:24px;color:var(--accent)}
+.ph-edit .add b svg{width:24px;height:24px}
+.where{border-radius:22px;padding:14px;background:var(--grad-dark);color:#fff;display:flex;gap:14px;align-items:center;cursor:pointer;box-shadow:0 16px 32px -18px rgba(20,20,43,.8)}
+.where .th{width:72px;height:72px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.12);flex:none;display:grid;place-items:center}
+.where .th svg{width:30px;height:30px}
 .where .th img{width:100%;height:100%;object-fit:cover}
-.where .wl{font-size:12px;font-weight:800;opacity:.85;text-transform:uppercase;letter-spacing:.6px}
-.where .nm{font-size:20px;font-weight:900;line-height:1.15}
-.where .pt{font-size:13px;opacity:.9;margin-top:3px}
-.where.none{background:#F1E8DD;color:var(--ink)}
-.qrbox{background:#fff;border-radius:16px;padding:12px;display:flex;gap:14px;align-items:center}
-.qrbox svg{width:120px;height:120px;flex:none}
-.empty{text-align:center;padding:28px 16px;color:var(--muted)}
-.empty .e{font-size:46px}
-.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#F1E8DD;font-size:12.5px;font-weight:800;margin:0 4px 4px 0}
-.stats{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 2px}
-.stats .pill{background:#fff;box-shadow:0 1px 0 var(--line)}
-.score{height:8px;border-radius:9px;background:#F1E8DD;overflow:hidden;margin-top:6px}
-.score i{display:block;height:100%;background:var(--teal);border-radius:9px}
-.match-top{border:3px solid var(--teal)}
-.qimg{width:110px;height:110px;border-radius:16px;object-fit:cover;flex:none;background:#F3EADF}
-.ai{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--plum2);color:#4B33B5}
-.ai.off{background:#F1E8DD;color:var(--muted)}
-.testrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.testrow img{width:76px;height:76px;border-radius:12px;object-fit:cover;cursor:pointer;flex:none;border:3px solid #fff;box-shadow:0 2px 8px -4px rgba(0,0,0,.3)}
-.banner{background:var(--sun2);color:#6B4A00;border-radius:14px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
-.steps{counter-reset:s;padding:0;margin:8px 0 0;list-style:none}
-.steps li{counter-increment:s;position:relative;padding:4px 0 8px 36px;font-size:14.5px}
-.steps li:before{content:counter(s);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--coral2);color:#C2391A;font-weight:900;display:grid;place-items:center;font-size:14px}
-/* sheet & overlay */
-.backdrop{position:fixed;inset:0;background:rgba(30,22,45,.45);z-index:60;display:flex;align-items:flex-end;justify-content:center;animation:fd .15s}
-.sheet{background:var(--bg);width:100%;max-width:640px;max-height:88vh;border-radius:24px 24px 0 0;padding:10px 16px calc(16px + var(--sab));overflow:auto;animation:up .2s ease-out}
-.sheet .grab{width:44px;height:5px;border-radius:5px;background:#DCCFC0;margin:2px auto 10px}
-.sheet h2{margin:0 0 10px;font-size:20px;font-weight:900}
-@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.where .wl{font-size:11.5px;font-weight:600;opacity:.65;text-transform:uppercase;letter-spacing:.08em}
+.where .nm{font-size:21px;font-weight:700;line-height:1.15;letter-spacing:-.025em;margin-top:2px}
+.where .pt{font-size:13.5px;opacity:.78;margin-top:4px}
+.where.none{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.where.none .th{background:var(--fill);color:var(--muted)}
+.qrbox{display:flex;gap:16px;align-items:center}
+.qrbox>svg{width:116px;height:116px;flex:none;border-radius:12px;background:#fff;padding:2px}
+.empty{text-align:center;padding:32px 16px;color:var(--muted);font-size:15px;line-height:1.5}
+.empty .e{width:64px;height:64px;margin:0 auto 12px;border-radius:20px;background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--accent)}
+.empty .e svg{width:30px;height:30px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;background:var(--fill);font-size:13px;font-weight:500;margin:0 4px 4px 0;color:var(--ink2)}
+.pill svg{width:14px;height:14px}
+.stats{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0}
+.stats .pill{background:var(--surface);box-shadow:var(--shadow)}
+.score{height:6px;border-radius:9px;background:var(--fill);overflow:hidden;margin-top:8px}
+.score i{display:block;height:100%;background:var(--grad);border-radius:9px}
+.match-top{box-shadow:0 0 0 2px var(--accent),var(--shadow)}
+.qimg{width:104px;height:104px;border-radius:18px;object-fit:cover;flex:none;background:var(--fill)}
+.ai{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink)}
+.ai svg{width:14px;height:14px}
+.ai.off{background:var(--fill);color:var(--muted)}
+.testrow{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.testrow img{width:72px;height:72px;border-radius:16px;object-fit:cover;cursor:pointer;flex:none;box-shadow:var(--shadow)}
+.banner{background:var(--warn-soft);color:var(--warn-ink);border-radius:16px;padding:11px 14px;font-size:14px;margin-bottom:12px;line-height:1.4}
+.steps{counter-reset:s;padding:0;margin:10px 0 0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:3px 0 12px 38px;font-size:15px;line-height:1.4;color:var(--ink2)}
+.steps li:before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:9px;background:var(--accent-soft);color:var(--accent-ink);font-weight:700;display:grid;place-items:center;font-size:13.5px}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:flex-end;justify-content:center;animation:fd .18s}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:88vh;border-radius:28px 28px 0 0;padding:8px 20px calc(18px + var(--sab));overflow:auto;animation:up .28s cubic-bezier(.2,.9,.3,1)}
+.sheet .grab{width:38px;height:5px;border-radius:5px;background:var(--muted);opacity:.35;margin:2px auto 14px}
+.sheet h2{margin:0 0 12px;font-size:21px;font-weight:700;letter-spacing:-.025em}
+@keyframes up{from{transform:translateY(60px);opacity:.3}to{transform:none;opacity:1}}
 @keyframes fd{from{opacity:0}to{opacity:1}}
-.toast{position:fixed;left:50%;bottom:calc(104px + var(--sab));transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 16px;border-radius:14px;font-weight:800;font-size:14px;z-index:90;max-width:90vw;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);animation:fd .2s}
-.scanner{position:fixed;inset:0;background:#111;z-index:80;display:flex;flex-direction:column;color:#fff}
-.scanner .top{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + var(--sat)) 16px 12px}
+.toast{position:fixed;left:50%;top:calc(14px + var(--sat));transform:translateX(-50%);background:color-mix(in srgb,var(--ink) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--bg);padding:11px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:90;max-width:90vw;box-shadow:0 12px 30px -10px rgba(0,0,0,.45);animation:tin .25s cubic-bezier(.2,.9,.3,1)}
+@keyframes tin{from{transform:translate(-50%,-20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.scanner{position:fixed;inset:0;background:#000;z-index:80;display:flex;flex-direction:column;color:#fff}
+.scanner .top{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + var(--sat)) 20px 12px}
+.scanner .top .iconbtn{background:rgba(255,255,255,.15);color:#fff;box-shadow:none}
 .scanner .view{position:relative;flex:1;overflow:hidden;display:grid;place-items:center}
 .scanner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.scanner .frame{width:64vw;max-width:300px;aspect-ratio:1;border-radius:24px;box-shadow:0 0 0 9999px rgba(0,0,0,.45);border:3px solid #fff;position:relative;z-index:2}
-.scanner .msg{position:absolute;bottom:18px;left:16px;right:16px;text-align:center;z-index:3;font-size:14px;font-weight:800;text-shadow:0 1px 4px #000}
-.scanner .bottom{padding:14px 16px calc(16px + var(--sab));display:flex;flex-direction:column;gap:10px;background:#1B1726}
-.scanner .bottom .input{background:#2A2438;border-color:#2A2438;color:#fff}
-.busy{display:inline-block;width:18px;height:18px;border-radius:50%;border:3px solid currentColor;border-right-color:transparent;animation:sp .7s linear infinite;vertical-align:-3px}
+.scanner .frame{width:64vw;max-width:290px;aspect-ratio:1;border-radius:32px;box-shadow:0 0 0 9999px rgba(0,0,0,.5);border:2.5px solid rgba(255,255,255,.9);position:relative;z-index:2}
+.scanner .msg{position:absolute;bottom:20px;left:20px;right:20px;text-align:center;z-index:3;font-size:14.5px;font-weight:500}
+.scanner .bottom{padding:16px 20px calc(18px + var(--sab));display:flex;flex-direction:column;gap:10px;background:#0E0E12}
+.scanner .bottom .input{background:#1E1E24;color:#fff}
+.busy{display:inline-block;width:18px;height:18px;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;animation:sp .7s linear infinite;vertical-align:-3px}
 @keyframes sp{to{transform:rotate(360deg)}}
-.check{display:flex;align-items:center;gap:10px;padding:10px;background:#fff;border-radius:14px;margin-bottom:6px;cursor:pointer}
-.check input{width:22px;height:22px;accent-color:var(--coral)}
-/* labels */
+.check{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border-radius:16px;margin-bottom:6px;cursor:pointer;box-shadow:var(--shadow)}
+.update-bar{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:18px;padding:12px 12px 12px 16px;margin-bottom:12px;box-shadow:0 0 0 1.5px var(--accent),var(--shadow);font-size:15px}
+.check input{width:22px;height:22px;accent-color:var(--accent)}
 #print-area{display:none}
 .lblgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.lbl{border:2px dashed #D9CBB9;border-radius:12px;padding:8px;display:flex;gap:8px;align-items:center;background:#fff}
+.lbl{border:1px dashed #C9C9D3;border-radius:14px;padding:8px;display:flex;gap:8px;align-items:center;background:#fff;color:#0B0B14}
 .lbl svg{width:84px;height:84px;flex:none}
-.lbl .c{font-weight:900;font-size:18px;white-space:nowrap}
-.lbl .n{font-size:12px;font-weight:800;line-height:1.2}
+.lbl .c{font-weight:700;font-size:18px;white-space:nowrap;letter-spacing:-.01em}
+.lbl .n{font-size:12px;font-weight:500;line-height:1.25;display:flex;gap:4px;align-items:center}
+.lbl .n svg{width:13px;height:13px}
 @media print{
   body{padding:0;background:#fff}
   header.top,nav.tabs,main,.toast,.backdrop{display:none!important}
   #print-area{display:block}
   #print-area .lblgrid{grid-template-columns:repeat(3,1fr);gap:4mm}
   #print-area .lbl{border:1px dashed #999;border-radius:3mm;padding:3mm;break-inside:avoid;height:34mm}
-  #print-area .lbl svg{width:28mm;height:28mm}
+  #print-area .lbl>svg{width:28mm;height:28mm}
   #print-area .lbl .c{font-size:16pt}
   #print-area .lbl .n{font-size:9pt}
   @page{margin:10mm}
@@ -166,17 +205,17 @@ textarea.input{min-height:84px;resize:vertical}
 </head>
 <body>
 <header class="top">
-  <button class="iconbtn" id="back" hidden aria-label="Terug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="iconbtn" id="back" hidden aria-label="Terug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <h1 id="title">Speelgoed</h1>
   <div id="act" class="row"></div>
 </header>
 <main id="main"></main>
 <div id="print-area"></div>
 <nav class="tabs" id="tabs">
-  <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>Zoeken</button>
-  <button data-tab="containers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM18 14h2.5M14 20.5h2"/></svg>Bakken</button>
-  <button data-tab="recognize" class="fab"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg></span>Wat is dit?</button>
-  <button data-tab="items"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>Artikels</button>
+  <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>Zoeken</button>
+  <button data-tab="containers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM18 14h2.5M14 20.5h2"/></svg>Bakken</button>
+  <button data-tab="recognize" class="fab"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg></span>Wat is dit?</button>
+  <button data-tab="items"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>Artikels</button>
   <button data-tab="more"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>Meer</button>
 </nav>
 
@@ -184,6 +223,7 @@ textarea.input{min-height:84px;resize:vertical}
 <script>/*JSQR_LIB*/</script>
 <script>
 'use strict';
+const APP_VERSION='1.1.0';
 /* ============ helpers ============ */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -191,19 +231,39 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const SV=(d,extra='')=>`<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"${extra}>${d}</svg>`;
+const ICO={
+  bak:SV('<path d="M3.5 8.5h17l-1.6 10.2a2 2 0 0 1-2 1.8H7.1a2 2 0 0 1-2-1.8z"/><path d="M2.5 8.5h19M9.5 12.5h5"/>'),
+  doos:SV('<path d="M3.5 7.5 12 3.5l8.5 4v9L12 20.5l-8.5-4z"/><path d="M3.5 7.5 12 11.5l8.5-4M12 11.5v9"/>'),
+  locatie:SV('<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21z"/><circle cx="12" cy="10" r="2.4"/>'),
+  toy:SV('<circle cx="12" cy="8" r="3.2"/><circle cx="7.3" cy="5.2" r="1.6"/><circle cx="16.7" cy="5.2" r="1.6"/><path d="M7.5 20.5c-1.6-1-2.3-2.7-2.3-4.7 0-3 3-5.3 6.8-5.3s6.8 2.3 6.8 5.3c0 2-.7 3.7-2.3 4.7"/><path d="M9.5 20.5h5"/>'),
+  plus:SV('<path d="M12 5v14M5 12h14"/>'),
+  tag:SV('<path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1l7.9 7.9-9 9z"/><circle cx="8.3" cy="8.3" r="1.4"/>'),
+  print:SV('<path d="M6.5 9V3.5h11V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M6.5 14h11v6.5h-11z"/>'),
+  up:SV('<path d="M12 15.5V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4.5 14.5v4a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4"/>'),
+  down:SV('<path d="M12 4v11.5M7.5 11 12 15.5l4.5-4.5"/><path d="M4.5 14.5v4a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4"/>'),
+  img:SV('<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.7"/><path d="m20.5 16-4.5-4.5-8.5 8"/>'),
+  help:SV('<circle cx="12" cy="12" r="8.5"/><path d="M9.7 9.5a2.4 2.4 0 1 1 3.4 2.2c-.7.4-1.1.9-1.1 1.7v.3M12 16.8v.2"/>'),
+  spark:SV('<path d="M12 3.5l1.8 5 5 1.8-5 1.8-1.8 5-1.8-5-5-1.8 5-1.8z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>'),
+  check:SV('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
+  info:SV('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>'),
+  search:SV('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
+  cam:SV('<path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/>')
+};
 const TYPES={
-  bak:{label:'Bak',plural:'Bakken',prefix:'B',emoji:'🧺'},
-  doos:{label:'Doos',plural:'Dozen',prefix:'D',emoji:'📦'},
-  locatie:{label:'Locatie',plural:'Locaties',prefix:'L',emoji:'📍'}
+  bak:{label:'Bak',plural:'Bakken',prefix:'B',emoji:ICO.bak},
+  doos:{label:'Doos',plural:'Dozen',prefix:'D',emoji:ICO.doos},
+  locatie:{label:'Locatie',plural:'Locaties',prefix:'L',emoji:ICO.locatie}
 };
 const PREFIX2TYPE={B:'bak',D:'doos',L:'locatie'};
 const ICON={
-  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
-  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
-  qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1.2"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18z"/></svg>',
-  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg>',
-  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
-  tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/></svg>'
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1.2"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18z"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+  reload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></svg>',
+  tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/></svg>'
 };
 function toast(msg,ms=2400){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.append(t);setTimeout(()=>t.remove(),ms)}
 function sheet(html,{onMount}={}){
@@ -284,7 +344,7 @@ function chain(cid){const out=[];let c=S.containers.get(cid),g=0;while(c&&g++<25
 function pathText(cid){const ch=chain(cid);if(!ch.length)return'Nog geen plaats';const root=ch[0];return(root.locationText?root.locationText+' › ':'')+ch.map(c=>c.name||c.code).join(' › ')}
 function pathHTML(cid,{self=true}={}){
   let ch=chain(cid);if(!self)ch=ch.slice(0,-1);
-  const parts=[];if(ch[0]&&ch[0].locationText)parts.push(`<span>📍 ${esc(ch[0].locationText)}</span>`);
+  const parts=[];if(ch[0]&&ch[0].locationText)parts.push(`<span>${ICO.locatie} ${esc(ch[0].locationText)}</span>`);
   for(const c of ch)parts.push(`<a href="#" data-go="container" data-id="${c.id}">${esc(c.name||c.code)}</a>`);
   return`<div class="path">${parts.join('<span class="sep">›</span>')||'<span>—</span>'}</div>`;
 }
@@ -433,7 +493,7 @@ async function backfillEmbeddings(){
 function refreshAI(){$$('[data-ai]').forEach(el=>{el.outerHTML=aiBadge()})}
 function aiBadge(){
   const st=S.aiStatus;
-  if(st==='aan')return'<span class="ai" data-ai>✨ Slimme herkenning aan</span>';
+  if(st==='aan')return'<span class="ai" data-ai>'+ICO.spark+' Slimme herkenning aan</span>';
   if(st==='laden')return'<span class="ai" data-ai><span class="busy" style="width:12px;height:12px;border-width:2px"></span> Slimme herkenning laden…</span>';
   return'<span class="ai off" data-ai>Beeldvergelijking (zonder AI-model)</span>';
 }
@@ -475,7 +535,11 @@ function render(){
   $('#back').hidden=!S.hist.length;
   $('#act').innerHTML=r.action||'';
   const t=r.tab||cur.name;$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
-  const main=$('#main');main.innerHTML=(Store.mem&&(cur.name==='home'||cur.name==='more')?`<div class="banner">⚠️ Opslag is in deze weergave niet beschikbaar: wat je invoert verdwijnt als je de pagina sluit. Installeer de app op je iPhone om alles te bewaren.</div>`:'')+r.html;
+  const main=$('#main');main.innerHTML=(Store.mem&&(cur.name==='home'||cur.name==='more')?`<div class="banner">Opslag is in deze weergave niet beschikbaar: wat je invoert verdwijnt als je de pagina sluit. Installeer de app op je iPhone om alles te bewaren.</div>`:'')+r.html;
+  if(S.updateAvailable&&(cur.name==='home'||cur.name==='more')){
+    main.insertAdjacentHTML('afterbegin',`<div class="update-bar"><span class="grow"><b>Nieuwe versie ${esc(S.updateAvailable)}</b><br><span class="small">Tik om bij te werken — je gegevens blijven bewaard.</span></span><button class="btn sm primary" data-upd>Bijwerken</button></div>`);
+    $('[data-upd]',main).onclick=applyUpdate;
+  }
   r.after&&r.after(main);
 }
 document.addEventListener('click',e=>{
@@ -495,7 +559,7 @@ function handleHash(){
 /* ============ list renderers ============ */
 function itemTile(it){
   const pid=(it.photoIds||[])[0],c=S.containers.get(it.containerId);
-  return`<button class="tile" data-go="item" data-id="${it.id}"><div class="ph">${pid?`<img src="${thumbURL(pid)}" alt="" loading="lazy">`:'🧸'}</div>
+  return`<button class="tile" data-go="item" data-id="${it.id}"><div class="ph">${pid?`<img src="${thumbURL(pid)}" alt="" loading="lazy">`:ICO.toy}</div>
     <div class="tx"><div class="nm">${esc(it.name||'Naamloos')}</div><div class="lc">${c?esc(c.code+' · '+(c.name||'')):'<span style="color:var(--coral)">Nog geen plaats</span>'}</div></div></button>`;
 }
 function containerRow(c){
@@ -506,7 +570,7 @@ function containerRow(c){
 }
 function itemRow(it){
   const pid=(it.photoIds||[])[0];
-  return`<button class="li" data-go="item" data-id="${it.id}"><div class="th">${pid?`<img src="${thumbURL(pid)}" alt="">`:'🧸'}</div>
+  return`<button class="li" data-go="item" data-id="${it.id}"><div class="th">${pid?`<img src="${thumbURL(pid)}" alt="">`:ICO.toy}</div>
     <div class="grow"><div class="nm">${esc(it.name||'Naamloos')}</div><div class="sub">${it.containerId?esc(pathText(it.containerId)):'<span style="color:var(--coral)">Nog geen plaats</span>'}</div></div><span class="chev">›</span></button>`;
 }
 function search(q){
@@ -525,7 +589,7 @@ V.home=()=>{
   const recent=[...S.items.values()].sort((a,b)=>(b.created||0)-(a.created||0)).slice(0,6);
   const empty=!nC&&!nI;
   return{title:'Speelgoed Sorteerder',tab:'home',
-    html:`<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+    html:`<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
       <input class="input" id="q" type="search" placeholder="Waar ligt… (bv. dino, lego, B-003)" autocomplete="off"></div>
       <div id="res"></div>
       <div id="homeRest">
@@ -533,23 +597,23 @@ V.home=()=>{
         <button class="big-act coral" data-act="rec"><span class="ic">${ICON.cam}</span>Wat is dit?<small>Foto nemen → waar hoort het</small></button>
         <button class="big-act teal" data-act="scan"><span class="ic">${ICON.qr}</span>QR scannen<small>Open een bak, doos of locatie</small></button>
       </div>
-      <div class="stats">${['bak','doos','locatie'].map(t=>{const n=[...S.containers.values()].filter(c=>c.type===t).length;return`<span class="pill">${TYPES[t].emoji} ${n} ${n===1?TYPES[t].label.toLowerCase():TYPES[t].plural.toLowerCase()}</span>`}).join('')}<span class="pill">🧸 ${nI} artikel${nI===1?'':'s'}</span></div>
+      <div class="stats">${['bak','doos','locatie'].map(t=>{const n=[...S.containers.values()].filter(c=>c.type===t).length;return`<span class="pill">${TYPES[t].emoji} ${n} ${n===1?TYPES[t].label.toLowerCase():TYPES[t].plural.toLowerCase()}</span>`}).join('')}<span class="pill">${ICO.toy} ${nI} artikel${nI===1?'':'s'}</span></div>
       ${empty?`<div class="card" style="margin-top:12px"><h2>Zo begin je</h2><ol class="steps">
         <li>Maak <b>locaties</b> (bv. Speelkamer – kast) en <b>bakken/dozen</b>, elk met een foto.</li>
         <li>Druk de <b>QR-labels</b> af en kleef ze op de bakken.</li>
         <li>Fotografeer het speelgoed en koppel het aan de juiste bak.</li>
         <li>Iets gevonden? Tik op <b>Wat is dit?</b> en de app zegt waar het hoort.</li></ol>
         <div class="row wrap" style="margin-top:8px"><button class="btn primary" data-act="newc">${ICON.qr} QR-codes maken</button><button class="btn soft" data-act="demo">Voorbeelddata laden</button></div></div>`
-      :`${recent.length?`<h3 style="margin:18px 2px 10px;font-weight:900">Recent toegevoegd</h3><div class="grid2">${recent.map(itemTile).join('')}</div>`:''}`}
+      :`${recent.length?`<h3 style="margin:18px 2px 10px;font-weight:700">Recent toegevoegd</h3><div class="grid2">${recent.map(itemTile).join('')}</div>`:''}`}
       </div>`,
     after(m){
       const q=$('#q',m),res=$('#res',m),rest=$('#homeRest',m);
       q.oninput=()=>{
         const v=q.value.trim();if(!v){res.innerHTML='';rest.hidden=false;return}
         rest.hidden=true;const r=search(v);
-        res.innerHTML=(!r.items.length&&!r.containers.length)?`<div class="empty"><div class="e">🔍</div>Niets gevonden voor “${esc(v)}”.<br><button class="btn soft" style="margin-top:12px" data-act="rec2">${ICON.cam} Zoek met een foto</button></div>`:
-          `${r.items.length?`<h3 style="margin:14px 2px 8px;font-weight:900">Artikels (${r.items.length})</h3>${r.items.slice(0,40).map(itemRow).join('')}`:''}
-           ${r.containers.length?`<h3 style="margin:14px 2px 8px;font-weight:900">Bakken, dozen & locaties (${r.containers.length})</h3>${r.containers.map(containerRow).join('')}`:''}`;
+        res.innerHTML=(!r.items.length&&!r.containers.length)?`<div class="empty"><div class="e">${ICO.search}</div>Niets gevonden voor “${esc(v)}”.<br><button class="btn soft" style="margin-top:12px" data-act="rec2">${ICON.cam} Zoek met een foto</button></div>`:
+          `${r.items.length?`<h3 style="margin:14px 2px 8px;font-weight:700">Artikels (${r.items.length})</h3>${r.items.slice(0,40).map(itemRow).join('')}`:''}
+           ${r.containers.length?`<h3 style="margin:14px 2px 8px;font-weight:700">Bakken, dozen & locaties (${r.containers.length})</h3>${r.containers.map(containerRow).join('')}`:''}`;
         const b=$('[data-act=rec2]',res);if(b)b.onclick=()=>tab('recognize');
       };
       const a=n=>$(`[data-act=${n}]`,m);
@@ -571,10 +635,10 @@ V.containers=(p)=>{
   const list=sortedContainers().filter(c=>f==='alle'||c.type===f);
   return{title:'Bakken & locaties',tab:'containers',
     action:`<button class="iconbtn" data-act="scan" aria-label="Scan">${ICON.qr}</button><button class="iconbtn coral" data-act="new" aria-label="Nieuw">${ICON.plus}</button>`,
-    html:`<button class="big-act teal" style="width:100%;min-height:0;flex-direction:row;align-items:center;margin-bottom:12px" data-act="qrmake"><span class="ic">${ICON.qr}</span><span>QR-codes maken<br><small>Nieuwe bak/doos/locatie of een reeks lege labels</small></span></button>
+    html:`<button class="big-act teal wide" data-act="qrmake"><span class="ic">${ICON.qr}</span><span>QR-codes maken<br><small>Nieuwe bak/doos/locatie of een reeks lege labels</small></span></button>
       <div class="seg" style="margin-bottom:12px">${['alle','locatie','bak','doos'].map(k=>`<button data-f="${k}" class="${f===k?'on':''}">${k==='alle'?'Alle':TYPES[k].plural}</button>`).join('')}</div>
-      ${list.length?list.map(containerRow).join(''):`<div class="empty"><div class="e">🧺</div>Nog niets hier.<br>Maak een bak, doos of locatie aan.</div>`}
-      <div class="row" style="margin-top:14px"><button class="btn block" data-act="labels">🏷️ QR-labels afdrukken</button></div>`,
+      ${list.length?list.map(containerRow).join(''):`<div class="empty"><div class="e">${ICO.bak}</div>Nog niets hier.<br>Maak een bak, doos of locatie aan.</div>`}
+      <div class="row" style="margin-top:14px"><button class="btn block" data-act="labels">${ICO.tag} QR-labels afdrukken</button></div>`,
     after(m){
       $$('[data-f]',m).forEach(b=>b.onclick=()=>{S.cFilter=b.dataset.f;render()});
       $('[data-act=labels]',m).onclick=()=>go('labels',{});
@@ -593,13 +657,13 @@ V.container=(p)=>{
       <div class="card" style="margin-top:12px"><div class="row" style="justify-content:space-between">${codeChip(c)}<span class="muted small">${TYPES[c.type].label}</span></div>
         <h2 style="margin-top:8px;font-size:22px">${esc(c.name||TYPES[c.type].label)}</h2>
         ${c.description?`<div style="white-space:pre-wrap">${esc(c.description)}</div>`:''}
-        <div style="margin-top:10px"><div class="small muted" style="font-weight:800;margin-bottom:4px">${c.type==='locatie'?'Plaats':'Staat in / op'}</div>${c.parentId||c.locationText?pathHTML(c.id,{self:false}):'<span class="muted small">Nog geen locatie gekozen</span>'}</div>
+        <div style="margin-top:10px"><div class="small muted" style="font-weight:600;margin-bottom:4px">${c.type==='locatie'?'Plaats':'Staat in / op'}</div>${c.parentId||c.locationText?pathHTML(c.id,{self:false}):'<span class="muted small">Nog geen locatie gekozen</span>'}</div>
       </div>
-      <div class="qrbox card">${qrSVG(qrText(c.code))}<div class="grow"><div style="font-weight:900;font-size:24px">${esc(c.code)}</div><div class="small muted">Kleef dit label op de ${TYPES[c.type].label.toLowerCase()}.</div><button class="btn sm soft" style="margin-top:8px" data-act="label">🏷️ Label afdrukken</button></div></div>
+      <div class="qrbox card">${qrSVG(qrText(c.code))}<div class="grow"><div style="font-weight:700;font-size:24px">${esc(c.code)}</div><div class="small muted">Kleef dit label op de ${TYPES[c.type].label.toLowerCase()}.</div><button class="btn sm soft" style="margin-top:8px" data-act="label">${ICO.tag} Label afdrukken</button></div></div>
       <div class="row" style="margin:6px 0 12px"><button class="btn primary grow" data-act="add">${ICON.cam} Speelgoed toevoegen</button>${c.type!=='doos'?`<button class="btn" data-act="addc">${ICON.plus} Bak hierin</button>`:''}</div>
       ${kids.length?`<h3 style="margin:8px 2px">Hierin (${kids.length})</h3>${kids.map(containerRow).join('')}`:''}
       <h3 style="margin:14px 2px 10px">Artikels (${items.length})</h3>
-      ${items.length?`<div class="grid2">${items.map(itemTile).join('')}</div>`:`<div class="empty" style="padding:14px"><div class="e">🧸</div>Nog geen speelgoed gekoppeld.</div>`}`,
+      ${items.length?`<div class="grid2">${items.map(itemTile).join('')}</div>`:`<div class="empty" style="padding:14px"><div class="e">${ICO.toy}</div>Nog geen speelgoed gekoppeld.</div>`}`,
     after(m){
       $('#act [data-act=edit]').onclick=()=>go('containerEdit',{id:c.id});
       $('[data-act=label]',m).onclick=()=>go('labels',{only:[c.id]});
@@ -617,12 +681,12 @@ V.containerEdit=(p)=>{
   return{title:ex?'Bewerken':'Nieuw',tab:'containers',
     html:`<div class="seg">${Object.keys(TYPES).map(k=>`<button data-t="${k}" class="${d.type===k?'on':''}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div>
       <label class="f">Foto</label>
-      <div class="row">${d.photoId?`<img src="${thumbURL(d.photoId)}" style="width:96px;height:96px;border-radius:14px;object-fit:cover">`:`<div style="width:96px;height:96px;border-radius:14px;background:#F3EADF;display:grid;place-items:center;font-size:34px">${TYPES[d.type].emoji}</div>`}
+      <div class="row">${d.photoId?`<img src="${thumbURL(d.photoId)}" style="width:96px;height:96px;border-radius:14px;object-fit:cover">`:`<div style="width:96px;height:96px;border-radius:14px;background:var(--fill);display:grid;place-items:center;font-size:34px">${TYPES[d.type].emoji}</div>`}
         <div class="stack grow"><button class="btn sm primary block" data-act="cam">${ICON.cam} Foto nemen</button><button class="btn sm block" data-act="lib">Uit bibliotheek</button></div></div>
       <label class="f">Naam</label><input class="input" id="nm" value="${esc(d.name)}" placeholder="${d.type==='locatie'?'bv. Speelkamer – kast links':'bv. Bak voertuigen'}">
       <label class="f">QR-code</label><input class="input" id="cd" value="${esc(d.code)}" autocapitalize="characters">
       <label class="f">${d.type==='locatie'?'Ligt in (andere locatie, optioneel)':'Staat in / op (locatie of andere bak)'}</label>
-      <button class="li" data-act="parent" style="margin:0"><div class="th">${parent?(parent.photoId?`<img src="${thumbURL(parent.photoId)}">`:TYPES[parent.type].emoji):'➕'}</div><div class="grow"><div class="nm">${parent?esc(parent.name||parent.code):'Kies een locatie'}</div><div class="sub">${parent?esc(parent.code+' · '+pathText(parent.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
+      <button class="li" data-act="parent" style="margin:0"><div class="th">${parent?(parent.photoId?`<img src="${thumbURL(parent.photoId)}">`:TYPES[parent.type].emoji):ICO.plus}</div><div class="grow"><div class="nm">${parent?esc(parent.name||parent.code):'Kies een locatie'}</div><div class="sub">${parent?esc(parent.code+' · '+pathText(parent.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
       <label class="f">Locatie-omschrijving (vrije tekst)</label><input class="input" id="lt" value="${esc(d.locationText)}" placeholder="bv. Zolder, 2de rek bovenaan">
       <label class="f">Omschrijving / inhoud</label><textarea class="input" id="ds" placeholder="bv. Alle auto's, treinen en vliegtuigjes">${esc(d.description)}</textarea>
       <button class="btn primary block" style="margin-top:16px" data-act="save">Bewaren</button>
@@ -692,7 +756,7 @@ V.items=()=>{
     action:`<button class="iconbtn coral" data-act="new" aria-label="Nieuw">${ICON.plus}</button>`,
     html:`<div class="search" style="margin-bottom:10px">${ICON.search}<input class="input" id="iq" type="search" value="${esc(q)}" placeholder="Zoek speelgoed" autocomplete="off"></div>
       <div class="seg" style="margin-bottom:12px"><button data-f="alle" class="${f==='alle'?'on':''}">Alles (${S.items.size})</button><button data-f="los" class="${f==='los'?'on':''}">Zonder plaats (${[...S.items.values()].filter(i=>!i.containerId).length})</button></div>
-      ${list.length?`<div class="grid2">${list.map(itemTile).join('')}</div>`:`<div class="empty"><div class="e">🧸</div>${q?'Niets gevonden.':'Nog geen artikels.<br>Tik op + om speelgoed te fotograferen.'}</div>`}`,
+      ${list.length?`<div class="grid2">${list.map(itemTile).join('')}</div>`:`<div class="empty"><div class="e">${ICO.toy}</div>${q?'Niets gevonden.':'Nog geen artikels.<br>Tik op + om speelgoed te fotograferen.'}</div>`}`,
     after(m){
       $$('[data-f]',m).forEach(b=>b.onclick=()=>{S.iFilter=b.dataset.f;render()});
       const iq=$('#iq',m);let t;iq.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{S.iQuery=iq.value;render();const n=$('#iq');n.focus();n.setSelectionRange(n.value.length,n.value.length)},250)};
@@ -706,7 +770,7 @@ V.item=(p)=>{
   return{title:it.name||'Artikel',tab:'items',
     action:`<button class="iconbtn" data-act="edit" aria-label="Bewerken">${ICON.edit}</button>`,
     html:`${(it.photoIds||[]).length?`<div class="photos">${it.photoIds.map(pid=>`<img src="${fullURL(pid)}" alt="">`).join('')}</div>`:''}
-      ${p.found?`<div class="banner" style="background:var(--teal2);color:#0B6F64;margin-top:12px">✅ Herkend! Leg het terug op deze plaats:</div>`:''}
+      ${p.found?`<div class="banner" style="background:var(--teal2);color:var(--ok-ink);margin-top:12px">${ICO.check} Herkend! Leg het terug op deze plaats:</div>`:''}
       <div style="margin-top:12px">${whereCard(c)}</div>
       <div class="card" style="margin-top:12px"><h2 style="font-size:22px">${esc(it.name||'Naamloos')}</h2>
         ${it.description?`<div style="white-space:pre-wrap">${esc(it.description)}</div>`:'<div class="muted small">Geen omschrijving</div>'}
@@ -721,10 +785,10 @@ V.item=(p)=>{
     }};
 };
 function whereCard(c){
-  if(!c)return`<div class="where none"><div class="th">❔</div><div><div class="wl">Hoort in</div><div class="nm">Nog geen plaats</div><div class="pt">Tik op “Verplaatsen” om een bak te kiezen.</div></div></div>`;
+  if(!c)return`<div class="where none"><div class="th">${ICO.help}</div><div><div class="wl">Hoort in</div><div class="nm">Nog geen plaats</div><div class="pt">Tik op “Verplaatsen” om een bak te kiezen.</div></div></div>`;
   const above=chain(c.id).slice(0,-1),root=chain(c.id)[0];
   const pt=[root&&root.locationText,...above.map(x=>x.name||x.code)].filter(Boolean).join(' › ');
-  return`<div class="where"><div class="th">${c.photoId?`<img src="${thumbURL(c.photoId)}" alt="">`:TYPES[c.type].emoji}</div><div class="grow"><div class="wl">Hoort in ${TYPES[c.type].label.toLowerCase()} ${esc(c.code)}</div><div class="nm">${esc(c.name||c.code)}</div>${pt?`<div class="pt">📍 ${esc(pt)}</div>`:''}</div><span style="font-size:24px">›</span></div>`;
+  return`<div class="where"><div class="th">${c.photoId?`<img src="${thumbURL(c.photoId)}" alt="">`:TYPES[c.type].emoji}</div><div class="grow"><div class="wl">Hoort in ${TYPES[c.type].label.toLowerCase()} ${esc(c.code)}</div><div class="nm">${esc(c.name||c.code)}</div>${pt?`<div class="pt">${ICO.locatie} ${esc(pt)}</div>`:''}</div><span style="font-size:24px">›</span></div>`;
 }
 
 V.itemEdit=(p)=>{
@@ -736,10 +800,10 @@ V.itemEdit=(p)=>{
   return{title:ex?'Artikel bewerken':'Nieuw artikel',tab:'items',
     html:`<label class="f" style="margin-top:4px">Foto's <span style="font-weight:700">(één of meer kanten — mag ook zonder)</span></label>
       <div class="ph-edit">${d.photoIds.map(pid=>`<div class="p"><img src="${thumbURL(pid)}"><button data-rm="${pid}" aria-label="Verwijder">✕</button></div>`).join('')}
-        <div class="add" data-act="cam"><div><b>📷</b>Foto</div></div><div class="add" data-act="lib"><div><b>🖼️</b>Bibliotheek</div></div></div>
+        <div class="add" data-act="cam"><div><b>${ICO.cam}</b>Foto</div></div><div class="add" data-act="lib"><div><b>${ICO.img}</b>Bibliotheek</div></div></div>
       <label class="f">Naam</label><input class="input" id="nm" value="${esc(d.name)}" placeholder="bv. Rode raceauto">
       <label class="f">Hoort in</label>
-      <button class="li" data-act="where" style="margin:0"><div class="th">${c?(c.photoId?`<img src="${thumbURL(c.photoId)}">`:TYPES[c.type].emoji):'➕'}</div><div class="grow"><div class="nm">${c?esc(c.code+' · '+(c.name||'')):'Kies bak, doos of locatie'}</div><div class="sub">${c?esc(pathText(c.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
+      <button class="li" data-act="where" style="margin:0"><div class="th">${c?(c.photoId?`<img src="${thumbURL(c.photoId)}">`:TYPES[c.type].emoji):ICO.plus}</div><div class="grow"><div class="nm">${c?esc(c.code+' · '+(c.name||'')):'Kies bak, doos of locatie'}</div><div class="sub">${c?esc(pathText(c.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
       <label class="f">Omschrijving</label><textarea class="input" id="ds" placeholder="bv. Hoort bij de garage-set, 4 wieltjes">${esc(d.description)}</textarea>
       <label class="f">Trefwoorden (komma's)</label><input class="input" id="tg" value="${esc(d._tags)}" placeholder="auto, rood, hot wheels">
       <button class="btn primary block" style="margin-top:16px" data-act="save">Bewaren</button>
@@ -780,11 +844,11 @@ V.recognize=(p)=>{
   return{title:'Wat is dit?',tab:'recognize',
     html:`<div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><h2>Neem een foto van het speelgoed</h2></div>
       <div class="muted small" style="margin-bottom:10px">De app vergelijkt je foto met alle artikelfoto's en zegt waar het hoort. Leg het speelgoed op een rustige achtergrond.</div>
-      <div class="row"><button class="btn primary grow" data-act="cam">${ICON.cam} Foto nemen</button><button class="btn" data-act="lib">🖼️</button></div>
+      <div class="row"><button class="btn primary grow" data-act="cam">${ICON.cam} Foto nemen</button><button class="btn" data-act="lib">${ICO.img}</button></div>
       <div style="margin-top:10px">${aiBadge()}</div>
-      ${tests&&tests.length?`<div style="margin-top:12px"><div class="small muted" style="font-weight:800;margin-bottom:6px">Demo: probeer met een testfoto</div><div class="testrow">${tests.map((t,i)=>`<img src="${t.url}" data-test="${i}" alt="testfoto">`).join('')}</div></div>`:''}
+      ${tests&&tests.length?`<div style="margin-top:12px"><div class="small muted" style="font-weight:600;margin-bottom:6px">Demo: probeer met een testfoto</div><div class="testrow">${tests.map((t,i)=>`<img src="${t.url}" data-test="${i}" alt="testfoto">`).join('')}</div></div>`:''}
       </div>
-      <div id="out">${R?resultHTML(R):(!S.items.size?`<div class="empty"><div class="e">📸</div>Voeg eerst artikels met foto's toe,<br>dan kan de app ze herkennen.</div>`:'')}</div>`,
+      <div id="out">${R?resultHTML(R):(!S.items.size?`<div class="empty"><div class="e">${ICO.cam}</div>Voeg eerst artikels met foto's toe,<br>dan kan de app ze herkennen.</div>`:'')}</div>`,
     after(m){
       const run=async src=>{const out=$('#out',m);out.innerHTML='<div class="empty"><span class="busy"></span> Vergelijken…</div>';await sleep(30);
         try{const r=await recognize(src);r.url=r.canvas.toDataURL('image/jpeg',.8);S.lastResult=r;out.innerHTML=resultHTML(r);wire(out)}catch(e){out.innerHTML='<div class="empty">Kon de foto niet lezen.</div>'}};
@@ -807,8 +871,8 @@ function resultHTML(r){
   const sure=pct(top.score)>=60&&top.score-second>.06;
   const c=S.containers.get(top.item.containerId);
   return`<div class="card match-top"><div class="row" style="align-items:flex-start"><img class="qimg" src="${r.url}" alt="jouw foto"><div class="grow">
-      <div class="small muted" style="font-weight:800">${sure?'Dit is hoogstwaarschijnlijk':'Lijkt het meest op'}</div>
-      <div style="font-size:21px;font-weight:900;line-height:1.15">${esc(top.item.name)}</div>
+      <div class="small muted" style="font-weight:600">${sure?'Dit is hoogstwaarschijnlijk':'Lijkt het meest op'}</div>
+      <div style="font-size:21px;font-weight:700;line-height:1.15">${esc(top.item.name)}</div>
       <div class="score"><i style="width:${pct(top.score)}%"></i></div><div class="small muted">${pct(top.score)}% gelijkenis</div></div></div>
     <div style="margin-top:12px">${whereCard(c).replace('class="where','data-go="container" data-id="'+(c?c.id:'')+'" class="where')}</div>
     <div class="row" style="margin-top:10px"><button class="btn teal grow" data-yes="${top.item.id}">✓ Ja, dit is het</button><button class="btn sm" data-learn="${top.item.id}" title="Foto bewaren bij dit artikel">+ foto bewaren</button></div></div>
@@ -823,9 +887,9 @@ V.labels=(p)=>{
   const sel=all.filter(c=>p._sel.has(c.id));
   return{title:'QR-labels',tab:'containers',
     html:`<div class="card"><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. In de geïnstalleerde app werkt “Afdrukken” rechtstreeks (AirPrint).</div>
-      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">🖨️ Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div></div>
+      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">${ICO.print} Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div></div>
       ${all.length?`<div class="row" style="justify-content:space-between;margin:4px 2px 8px"><b>${sel.length} van ${all.length} gekozen</b><button class="btn sm" data-act="toggle">${sel.length===all.length?'Niets':'Alles'}</button></div>
-      ${all.map(c=>`<label class="check"><input type="checkbox" data-c="${c.id}" ${p._sel.has(c.id)?'checked':''}>${codeChip(c)}<span class="grow" style="font-weight:800">${esc(c.name)}</span></label>`).join('')}
+      ${all.map(c=>`<label class="check"><input type="checkbox" data-c="${c.id}" ${p._sel.has(c.id)?'checked':''}>${codeChip(c)}<span class="grow" style="font-weight:600">${esc(c.name)}</span></label>`).join('')}
       <h3 style="margin:16px 2px 8px">Voorbeeld</h3><div class="lblgrid">${sel.slice(0,8).map(labelHTML).join('')}</div>`:'<div class="empty">Nog geen bakken of locaties.</div>'}`,
     after(m){
       $$('[data-c]',m).forEach(cb=>cb.onchange=()=>{cb.checked?p._sel.add(cb.dataset.c):p._sel.delete(cb.dataset.c);const y=window.scrollY;render();window.scrollTo(0,y)});
@@ -843,7 +907,7 @@ V.qrmake=(p)=>{
         <div class="row">${Object.keys(TYPES).map(k=>`<button class="btn grow sm" data-one="${k}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div></div>
       <div class="card"><h2>Reeks lege labels</h2><div class="small muted">Handig om in één keer af te drukken en op alle bakken te kleven. Daarna scan je een label en vul je foto, naam en locatie in.</div>
         <label class="f">Soort</label><div class="seg">${Object.keys(TYPES).map(k=>`<button data-t="${k}" class="${t===k?'on':''}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div>
-        <label class="f">Aantal labels</label><div class="row"><button class="btn" data-d="-1">−</button><input class="input" id="n" type="number" min="1" max="96" value="${n}" style="text-align:center;font-weight:900"><button class="btn" data-d="1">+</button></div>
+        <label class="f">Aantal labels</label><div class="row"><button class="btn" data-d="-1">−</button><input class="input" id="n" type="number" min="1" max="96" value="${n}" style="text-align:center;font-weight:700"><button class="btn" data-d="1">+</button></div>
         <div class="small muted" style="margin-top:8px">Codes: <b>${(()=>{const f=nextCode(t),pre=f[0],st=+f.slice(2);return f+' t/m '+pre+'-'+String(st+n-1).padStart(3,'0')})()}</b></div>
         <button class="btn primary block" style="margin-top:14px" data-act="make">${ICON.qr} Maak ${n} QR-codes</button></div>
       ${(S.settings.reserved&&Object.keys(S.settings.reserved).length)?`<div class="small muted" style="padding:0 4px">Eerder gemaakte, nog niet ingevulde labels blijven gereserveerd — een code wordt nooit twee keer gebruikt.</div>`:''}`,
@@ -865,7 +929,7 @@ function blankLabelsView(p){
   const L=p.blank;
   return{title:'Nieuwe QR-labels',tab:'containers',
     html:`<div class="card"><h2>${L.length} QR-codes klaar</h2><div class="small muted">${esc(L[0].code)} t/m ${esc(L[L.length-1].code)}. Druk ze af, kleef ze op de ${TYPES[L[0].type].plural.toLowerCase()} en scan daarna een label: de app vraagt dan om foto, naam en locatie in te vullen.</div>
-      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">🖨️ Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">${ICO.print} Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div>
       <button class="btn soft block" style="margin-top:10px" data-act="fill">${ICON.edit} Eerste label nu invullen (${esc(L[0].code)})</button></div>
       <div class="lblgrid">${L.map(labelHTML).join('')}</div>`,
     after(m){
@@ -882,8 +946,8 @@ async function labelImages(list){
     list.slice(s,s+per).forEach((c,i)=>{const cx=mx+(i%cols)*gw,cy=my+Math.floor(i/cols)*gh;
       x.strokeStyle='#bbb';x.setLineDash([8,6]);x.lineWidth=2;x.strokeRect(cx+6,cy+6,gw-12,gh-12);x.setLineDash([]);
       const q=gh-36;drawQR(x,qrText(c.code),cx+16,cy+18,q);
-      x.fillStyle='#000';x.font='900 40px Nunito, Arial, sans-serif';x.fillText(c.code,cx+q+26,cy+70);
-      x.font='700 22px Nunito, Arial, sans-serif';wrapText(x,c.name?`${TYPES[c.type].label}: ${c.name}`:`${TYPES[c.type].label}: ……………………`,cx+q+26,cy+104,gw-q-44,26,3)});
+      x.fillStyle='#000';x.font='700 40px Inter, Arial, sans-serif';x.fillText(c.code,cx+q+26,cy+70);
+      x.font='500 22px Inter, Arial, sans-serif';wrapText(x,c.name?`${TYPES[c.type].label}: ${c.name}`:`${TYPES[c.type].label}: ……………………`,cx+q+26,cy+104,gw-q-44,26,3)});
     pages.push(cv.toDataURL('image/png'));
   }
   sheet(`<h2>Labels als afbeelding</h2><div class="small muted" style="margin-bottom:10px">Houd de afbeelding ingedrukt → “Bewaar in Foto's” of “Deel”, en druk af op A4.</div>
@@ -901,10 +965,13 @@ async function shareOrDownload(files){
 V.more=()=>{
   const nP=S.photos.size;
   return{title:'Meer',tab:'more',
-    html:`<div class="card"><h2>Herkenning</h2>
+    html:`<div class="card"><h2>App-versie</h2>
+        <div class="row" style="justify-content:space-between"><div><div style="font-size:15px">Speelgoed Sorteerder <b>v${APP_VERSION}</b></div><div class="small muted" id="updmsg">${S.updateAvailable?'Versie '+esc(S.updateAvailable)+' is beschikbaar.':'Controleer of er een nieuwe versie is.'}</div></div></div>
+        <div class="row" style="margin-top:12px"><button class="btn primary grow" data-act="upd">${ICO.down} ${S.updateAvailable?'Nu bijwerken':'Zoek updates'}</button><button class="btn" data-act="reload" title="Opnieuw laden">${ICON.reload}</button></div></div>
+      <div class="card"><h2>Herkenning</h2>
         <div>${aiBadge()}</div>
         <div class="small muted" style="margin-top:8px">Met “slimme herkenning” laadt de app eenmalig een klein AI-beeldmodel (± 4 MB, internet nodig). Daarna herkent ze speelgoed veel beter, ook vanuit een andere hoek. Zonder model gebruikt de app kleur- en vormvergelijking (werkt volledig offline).</div>
-        <label class="check" style="margin-top:10px;background:#FFFCF8"><input type="checkbox" id="ai" ${S.settings.ai?'checked':''}><span class="grow">Slimme herkenning gebruiken</span></label>
+        <label class="check" style="margin-top:10px"><input type="checkbox" id="ai" ${S.settings.ai?'checked':''}><span class="grow">Slimme herkenning gebruiken</span></label>
         <div class="small muted">Tip: hoe meer foto's per artikel (verschillende kanten), hoe beter de herkenning.</div></div>
       <div class="card"><h2>QR-codes</h2>
         <label class="f" style="margin-top:0">Adres van de app (voor de iPhone-camera)</label>
@@ -912,13 +979,23 @@ V.more=()=>{
         <div class="small muted" style="margin-top:6px">Als dit is ingevuld, opent de gewone iPhone-camera een gescand label meteen in de app. Leeg = code “SPS:B-001” (scan dan via de app). De app leest beide soorten.</div>
         <button class="btn sm soft" style="margin-top:10px" data-act="bu">Bewaren</button></div>
       <div class="card"><h2>Back-up</h2><div class="small muted">${S.containers.size} bakken/locaties · ${S.items.size} artikels · ${nP} foto's${Store.mem?' · <b style="color:var(--coral)">tijdelijke opslag</b>':''}</div>
-        <div class="row" style="margin-top:10px"><button class="btn grow" data-act="exp">⬆️ Back-up maken</button><button class="btn grow" data-act="imp">⬇️ Terugzetten</button></div></div>
-      <div class="card"><h2>Installeren op iPhone</h2><ol class="steps"><li>Open het app-adres in <b>Safari</b>.</li><li>Tik op <b>Deel</b> ⬆️ → <b>Zet op beginscherm</b>.</li><li>Open de app via het nieuwe icoon: camera, scannen en afdrukken werken dan volledig.</li></ol></div>
+        <div class="row" style="margin-top:10px"><button class="btn grow" data-act="exp">${ICO.up} Back-up maken</button><button class="btn grow" data-act="imp">${ICO.down} Terugzetten</button></div></div>
+      <div class="card"><h2>Installeren op iPhone</h2><ol class="steps"><li>Open het app-adres in <b>Safari</b>.</li><li>Tik op <b>Deel</b> ${ICO.up} → <b>Zet op beginscherm</b>.</li><li>Open de app via het nieuwe icoon: camera, scannen en afdrukken werken dan volledig.</li></ol></div>
       <div class="card"><h2>Gegevens</h2><div class="row wrap"><button class="btn soft" data-act="demo">Voorbeelddata laden</button><button class="btn danger" data-act="wipe">Alles wissen</button></div></div>`,
     after(m){
       $('#ai',m).onchange=async e=>{S.settings.ai=e.target.checked;await saveSettings();if(S.settings.ai)loadAI();else{S.ai=null;S.aiStatus='uit';refreshAI()}};
       $('[data-act=bu]',m).onclick=async()=>{S.settings.baseUrl=$('#bu',m).value.trim();await saveSettings();toast('Bewaard ✓')};
       $('[data-act=exp]',m).onclick=exportBackup;
+      $('[data-act=reload]',m).onclick=applyUpdate;
+      $('[data-act=upd]',m).onclick=async e=>{
+        const b=e.currentTarget,msg=$('#updmsg',m);
+        if(S.updateAvailable)return applyUpdate();
+        b.disabled=true;b.innerHTML='<span class="busy"></span> Controleren…';
+        try{const v=await latestVersion();
+          if(v&&verNewer(v,APP_VERSION)){S.updateAvailable=v;render();toast('Versie '+v+' beschikbaar')}
+          else{msg.textContent='Je hebt de nieuwste versie (v'+APP_VERSION+').';b.disabled=false;b.innerHTML=ICO.check+' Up-to-date';}
+        }catch(err){msg.textContent='Controleren lukt niet (geen internet?).';b.disabled=false;b.innerHTML=ICO.down+' Opnieuw proberen'}
+      };
       $('[data-act=imp]',m).onclick=importBackup;
       $('[data-act=demo]',m).onclick=loadDemo;
       $('[data-act=wipe]',m).onclick=async()=>{if(!await confirmBox('Alles wissen? Dit kan niet ongedaan worden gemaakt.',{ok:'Alles wissen',danger:true}))return;
@@ -1018,11 +1095,28 @@ async function loadDemo(){
 }
 function v2(k){return k.length%2?2:3}
 
+/* ============ updates ============ */
+function verNewer(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){if((x[i]||0)>(y[i]||0))return true;if((x[i]||0)<(y[i]||0))return false}return false}
+async function latestVersion(){
+  const r=await fetch('index.html?check='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('http');
+  const m=(await r.text()).match(/const APP_VERSION='([^']+)'/);return m?m[1]:null;
+}
+async function applyUpdate(){
+  toast('App bijwerken…',4000);
+  try{const reg=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();if(reg){await reg.update();if(reg.waiting)reg.waiting.postMessage('skip')}}catch(e){}
+  try{if(window.caches)for(const k of await caches.keys())await caches.delete(k)}catch(e){}
+  try{await fetch('index.html',{cache:'reload'});await fetch('./',{cache:'reload'})}catch(e){}
+  location.reload();
+}
+async function autoCheck(){
+  try{const v=await latestVersion();if(v&&verNewer(v,APP_VERSION)){S.updateAvailable=v;if(cur.name==='home'||cur.name==='more')render()}}catch(e){}
+}
 /* ============ start ============ */
 (async function start(){
   await Store.init();await loadAll();
   if(!handleHash())render();
   if(S.settings.ai)setTimeout(loadAI,1200);
+  if(isTopLevelWeb())setTimeout(autoCheck,2500);
   if('serviceWorker' in navigator&&isTopLevelWeb()&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
