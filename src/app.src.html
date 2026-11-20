@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Speelgoed Sorteerder</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Speelgoed">
+<meta name="theme-color" content="#FFF6EC">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF6EC;--card:#fff;--ink:#2A2340;--muted:#7B7391;--line:#EFE4D6;--coral:#FF6B4A;--coral2:#FFE4DB;--teal:#16A394;--teal2:#D5F3EE;--sun:#F5A800;--sun2:#FFF0C4;--plum:#7A5AF8;--plum2:#ECE6FF;--r:18px;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.btn svg{width:21px;height:21px;flex:none}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-size:16px;font-weight:600}
+body{min-height:100vh;padding-bottom:calc(92px + var(--sab))}
+button,input,textarea,select{font:inherit;color:inherit}
+header.top{position:sticky;top:0;z-index:20;background:rgba(255,246,236,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:calc(10px + var(--sat)) 16px 10px;display:flex;align-items:center;gap:10px}
+header.top h1{font-size:23px;font-weight:900;margin:0;flex:1;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{width:42px;height:42px;flex:none;border-radius:14px;border:0;background:#fff;box-shadow:0 1px 0 var(--line),0 4px 14px -8px rgba(42,35,64,.3);display:grid;place-items:center;font-size:20px;color:var(--ink);cursor:pointer}
+.iconbtn svg{width:22px;height:22px}
+.iconbtn.coral{background:var(--coral);color:#fff}
+main{padding:6px 16px 24px;max-width:760px;margin:0 auto}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:flex-end;padding:6px 4px calc(6px + var(--sab))}
+nav.tabs button{flex:1;border:0;background:none;font-size:11px;font-weight:800;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer}
+nav.tabs button svg{width:25px;height:25px}
+nav.tabs button.on{color:var(--coral)}
+nav.tabs button.fab span.ring{width:60px;height:60px;margin-top:-26px;border-radius:50%;background:var(--coral);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(255,107,74,.7);border:4px solid #fff}
+nav.tabs button.fab svg{width:28px;height:28px}
+.card{background:#fff;border-radius:var(--r);padding:14px;box-shadow:0 1px 0 var(--line),0 8px 24px -16px rgba(42,35,64,.3);margin-bottom:12px}
+.card h2{margin:0 0 8px;font-size:18px;font-weight:900}
+.card h3{margin:0 0 6px;font-size:15px;font-weight:900}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 16px;font-weight:800;font-size:16px;background:#F3ECE3;color:var(--ink);cursor:pointer;text-decoration:none;min-height:48px}
+.btn.block{width:100%}
+.btn.primary{background:var(--coral);color:#fff}
+.btn.teal{background:var(--teal);color:#fff}
+.btn.plum{background:var(--plum);color:#fff}
+.btn.soft{background:var(--coral2);color:#C2391A}
+.btn.danger{background:#FFE1E1;color:#C42525}
+.btn.sm{min-height:38px;padding:8px 12px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.stack>*+*{margin-top:10px}
+.grow{flex:1;min-width:0}
+.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.big-act{border:0;border-radius:20px;padding:16px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:112px;font-weight:900;font-size:17px}
+.big-act small{font-weight:700;font-size:12.5px;opacity:.85}
+.big-act .ic{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.3);display:grid;place-items:center}
+.big-act .ic svg{width:24px;height:24px}
+.big-act.coral{background:var(--coral);color:#fff}
+.big-act.teal{background:var(--teal);color:#fff}
+label.f{display:block;font-size:13px;font-weight:800;color:var(--muted);margin:12px 0 6px}
+.input,textarea.input,select.input{width:100%;border:2px solid var(--line);background:#FFFCF8;border-radius:14px;padding:12px 14px;font-size:16px;outline:none}
+.input:focus{border-color:var(--coral)}
+textarea.input{min-height:84px;resize:vertical}
+.search{position:relative}
+.search input{padding-left:44px;background:#fff;border-color:#fff;box-shadow:0 1px 0 var(--line),0 8px 24px -16px rgba(42,35,64,.35);height:54px;font-size:17px}
+.search svg{position:absolute;left:14px;top:15px;width:24px;height:24px;color:var(--muted)}
+.seg{display:flex;background:#F1E8DD;border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:none;border-radius:11px;padding:9px 6px;font-weight:800;font-size:14px;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px -4px rgba(0,0,0,.25)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.grid2{grid-template-columns:repeat(3,1fr)}}
+.tile{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 8px 20px -16px rgba(42,35,64,.35);cursor:pointer;border:0;padding:0;text-align:left}
+.tile .ph{aspect-ratio:1;background:#F3EADF;display:grid;place-items:center;font-size:34px}
+.tile .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.tile .tx{padding:8px 10px 10px}
+.tile .nm{font-weight:900;font-size:15px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .lc{font-size:12px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li{display:flex;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:10px;margin-bottom:8px;box-shadow:0 1px 0 var(--line),0 8px 20px -18px rgba(42,35,64,.35);cursor:pointer;width:100%;border:0;text-align:left}
+.li .th{width:58px;height:58px;border-radius:12px;background:#F3EADF;flex:none;overflow:hidden;display:grid;place-items:center;font-size:26px}
+.li .th img{width:100%;height:100%;object-fit:cover}
+.li .nm{font-weight:900;font-size:16px;line-height:1.2}
+.li .sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.li .chev{color:#C9BFB2;font-size:22px}
+.code{display:inline-flex;align-items:center;gap:4px;font-weight:900;font-size:12.5px;padding:3px 8px;border-radius:8px;letter-spacing:.3px;white-space:nowrap}
+.code.bak{background:var(--coral2);color:#C2391A}
+.code.doos{background:var(--sun2);color:#8A5D00}
+.code.locatie{background:var(--teal2);color:#0B6F64}
+.path{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:13px;color:var(--muted)}
+.path a{color:var(--ink);text-decoration:none;font-weight:800}
+.path .sep{opacity:.5}
+.hero-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:#F3EADF;display:block}
+.photos{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.photos img{height:250px;width:auto;max-width:86%;border-radius:16px;scroll-snap-align:start;object-fit:cover;background:#F3EADF}
+.ph-edit{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ph-edit .p{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#F3EADF}
+.ph-edit .p img{width:100%;height:100%;object-fit:cover}
+.ph-edit .p button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:14px;cursor:pointer}
+.ph-edit .add{aspect-ratio:1;border-radius:12px;border:2px dashed #E2D4C3;display:grid;place-items:center;text-align:center;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;background:#FFFCF8}
+.ph-edit .add b{display:block;font-size:24px}
+.where{border-radius:var(--r);padding:14px;background:linear-gradient(135deg,var(--teal) 0%,#0E8C80 100%);color:#fff;display:flex;gap:12px;align-items:center;cursor:pointer}
+.where .th{width:74px;height:74px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.2);flex:none;display:grid;place-items:center;font-size:30px}
+.where .th img{width:100%;height:100%;object-fit:cover}
+.where .wl{font-size:12px;font-weight:800;opacity:.85;text-transform:uppercase;letter-spacing:.6px}
+.where .nm{font-size:20px;font-weight:900;line-height:1.15}
+.where .pt{font-size:13px;opacity:.9;margin-top:3px}
+.where.none{background:#F1E8DD;color:var(--ink)}
+.qrbox{background:#fff;border-radius:16px;padding:12px;display:flex;gap:14px;align-items:center}
+.qrbox svg{width:120px;height:120px;flex:none}
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.empty .e{font-size:46px}
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#F1E8DD;font-size:12.5px;font-weight:800;margin:0 4px 4px 0}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 2px}
+.stats .pill{background:#fff;box-shadow:0 1px 0 var(--line)}
+.score{height:8px;border-radius:9px;background:#F1E8DD;overflow:hidden;margin-top:6px}
+.score i{display:block;height:100%;background:var(--teal);border-radius:9px}
+.match-top{border:3px solid var(--teal)}
+.qimg{width:110px;height:110px;border-radius:16px;object-fit:cover;flex:none;background:#F3EADF}
+.ai{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--plum2);color:#4B33B5}
+.ai.off{background:#F1E8DD;color:var(--muted)}
+.testrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.testrow img{width:76px;height:76px;border-radius:12px;object-fit:cover;cursor:pointer;flex:none;border:3px solid #fff;box-shadow:0 2px 8px -4px rgba(0,0,0,.3)}
+.banner{background:var(--sun2);color:#6B4A00;border-radius:14px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+.steps{counter-reset:s;padding:0;margin:8px 0 0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:4px 0 8px 36px;font-size:14.5px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--coral2);color:#C2391A;font-weight:900;display:grid;place-items:center;font-size:14px}
+/* sheet & overlay */
+.backdrop{position:fixed;inset:0;background:rgba(30,22,45,.45);z-index:60;display:flex;align-items:flex-end;justify-content:center;animation:fd .15s}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:88vh;border-radius:24px 24px 0 0;padding:10px 16px calc(16px + var(--sab));overflow:auto;animation:up .2s ease-out}
+.sheet .grab{width:44px;height:5px;border-radius:5px;background:#DCCFC0;margin:2px auto 10px}
+.sheet h2{margin:0 0 10px;font-size:20px;font-weight:900}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes fd{from{opacity:0}to{opacity:1}}
+.toast{position:fixed;left:50%;bottom:calc(104px + var(--sab));transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 16px;border-radius:14px;font-weight:800;font-size:14px;z-index:90;max-width:90vw;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);animation:fd .2s}
+.scanner{position:fixed;inset:0;background:#111;z-index:80;display:flex;flex-direction:column;color:#fff}
+.scanner .top{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + var(--sat)) 16px 12px}
+.scanner .view{position:relative;flex:1;overflow:hidden;display:grid;place-items:center}
+.scanner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scanner .frame{width:64vw;max-width:300px;aspect-ratio:1;border-radius:24px;box-shadow:0 0 0 9999px rgba(0,0,0,.45);border:3px solid #fff;position:relative;z-index:2}
+.scanner .msg{position:absolute;bottom:18px;left:16px;right:16px;text-align:center;z-index:3;font-size:14px;font-weight:800;text-shadow:0 1px 4px #000}
+.scanner .bottom{padding:14px 16px calc(16px + var(--sab));display:flex;flex-direction:column;gap:10px;background:#1B1726}
+.scanner .bottom .input{background:#2A2438;border-color:#2A2438;color:#fff}
+.busy{display:inline-block;width:18px;height:18px;border-radius:50%;border:3px solid currentColor;border-right-color:transparent;animation:sp .7s linear infinite;vertical-align:-3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.check{display:flex;align-items:center;gap:10px;padding:10px;background:#fff;border-radius:14px;margin-bottom:6px;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--coral)}
+/* labels */
+#print-area{display:none}
+.lblgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.lbl{border:2px dashed #D9CBB9;border-radius:12px;padding:8px;display:flex;gap:8px;align-items:center;background:#fff}
+.lbl svg{width:84px;height:84px;flex:none}
+.lbl .c{font-weight:900;font-size:18px;white-space:nowrap}
+.lbl .n{font-size:12px;font-weight:800;line-height:1.2}
+@media print{
+  body{padding:0;background:#fff}
+  header.top,nav.tabs,main,.toast,.backdrop{display:none!important}
+  #print-area{display:block}
+  #print-area .lblgrid{grid-template-columns:repeat(3,1fr);gap:4mm}
+  #print-area .lbl{border:1px dashed #999;border-radius:3mm;padding:3mm;break-inside:avoid;height:34mm}
+  #print-area .lbl svg{width:28mm;height:28mm}
+  #print-area .lbl .c{font-size:16pt}
+  #print-area .lbl .n{font-size:9pt}
+  @page{margin:10mm}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="iconbtn" id="back" hidden aria-label="Terug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h1 id="title">Speelgoed</h1>
+  <div id="act" class="row"></div>
+</header>
+<main id="main"></main>
+<div id="print-area"></div>
+<nav class="tabs" id="tabs">
+  <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>Zoeken</button>
+  <button data-tab="containers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM18 14h2.5M14 20.5h2"/></svg>Bakken</button>
+  <button data-tab="recognize" class="fab"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg></span>Wat is dit?</button>
+  <button data-tab="items"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>Artikels</button>
+  <button data-tab="more"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>Meer</button>
+</nav>
+
+<script>/*QRCODE_LIB*/</script>
+<script>/*JSQR_LIB*/</script>
+<script>
+'use strict';
+/* ============ helpers ============ */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const TYPES={
+  bak:{label:'Bak',plural:'Bakken',prefix:'B',emoji:'🧺'},
+  doos:{label:'Doos',plural:'Dozen',prefix:'D',emoji:'📦'},
+  locatie:{label:'Locatie',plural:'Locaties',prefix:'L',emoji:'📍'}
+};
+const PREFIX2TYPE={B:'bak',D:'doos',L:'locatie'};
+const ICON={
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  qr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1.2"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1.2"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18z"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.6"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+  tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/></svg>'
+};
+function toast(msg,ms=2400){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.append(t);setTimeout(()=>t.remove(),ms)}
+function sheet(html,{onMount}={}){
+  return new Promise(resolve=>{
+    const bd=document.createElement('div');bd.className='backdrop';
+    bd.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
+    document.body.append(bd);
+    const close=v=>{bd.remove();resolve(v)};
+    bd.addEventListener('click',e=>{if(e.target===bd)close(null)});
+    onMount&&onMount(bd.firstElementChild,close);
+  });
+}
+function confirmBox(msg,{ok='OK',danger=false}={}){
+  return sheet(`<h2>${esc(msg)}</h2><div class="row"><button class="btn grow" data-n>Annuleren</button><button class="btn grow ${danger?'danger':'primary'}" data-y>${esc(ok)}</button></div>`,
+    {onMount:(el,close)=>{$('[data-n]',el).onclick=()=>close(false);$('[data-y]',el).onclick=()=>close(true)}});
+}
+function fileInput({capture=false,multiple=false}={}){
+  return new Promise(resolve=>{
+    const i=document.createElement('input');i.type='file';i.accept='image/*';
+    if(capture)i.setAttribute('capture','environment');if(multiple)i.multiple=true;
+    i.style.display='none';document.body.append(i);
+    i.onchange=()=>{const f=[...i.files];i.remove();resolve(f)};
+    i.click();
+  });
+}
+
+/* ============ storage ============ */
+const Store={db:null,mem:null,
+  async init(){
+    try{
+      if(!('indexedDB' in window))throw new Error('geen IndexedDB');
+      this.db=await new Promise((res,rej)=>{
+        const r=indexedDB.open('speelgoed-sorteerder',1);
+        r.onupgradeneeded=()=>{const d=r.result;for(const n of['containers','items','photos','meta'])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id'})};
+        r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
+        setTimeout(()=>rej(new Error('timeout')),5000);
+      });
+      try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+    }catch(e){this.mem={containers:new Map,items:new Map,photos:new Map,meta:new Map}}
+  },
+  _s(s,m){return this.db.transaction(s,m).objectStore(s)},
+  _p(q){return new Promise((res,rej)=>{q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+  async all(s){return this.mem?[...this.mem[s].values()]:this._p(this._s(s,'readonly').getAll())},
+  async get(s,id){return this.mem?this.mem[s].get(id):this._p(this._s(s,'readonly').get(id))},
+  async put(s,o){if(this.mem){this.mem[s].set(o.id,o);return}return this._p(this._s(s,'readwrite').put(o))},
+  async del(s,id){if(this.mem){this.mem[s].delete(id);return}return this._p(this._s(s,'readwrite').delete(id))},
+  async clear(s){if(this.mem){this.mem[s].clear();return}return this._p(this._s(s,'readwrite').clear())}
+};
+const S={containers:new Map,items:new Map,photos:new Map,thumbs:new Map,settings:{id:'settings',baseUrl:'',ai:true},ai:null,aiStatus:'uit',hist:[],cleanup:null,lastQuery:null,demoTests:null};
+async function loadAll(){
+  for(const c of await Store.all('containers'))S.containers.set(c.id,c);
+  for(const i of await Store.all('items'))S.items.set(i.id,i);
+  for(const p of await Store.all('photos'))S.photos.set(p.id,p);
+  const st=await Store.get('meta','settings');if(st)Object.assign(S.settings,st);
+  if(!S.settings.baseUrl&&!st&&isTopLevelWeb())S.settings.baseUrl=location.origin+location.pathname;
+}
+function isTopLevelWeb(){try{return window.self===window.top&&/^https?:$/.test(location.protocol)}catch(e){return false}}
+const saveSettings=()=>Store.put('meta',S.settings);
+async function saveContainer(c){c.updated=Date.now();S.containers.set(c.id,c);await Store.put('containers',c)}
+async function saveItem(i){i.updated=Date.now();S.items.set(i.id,i);await Store.put('items',i)}
+async function deletePhoto(pid){S.photos.delete(pid);const u=S.thumbs.get(pid);if(u){URL.revokeObjectURL(u);S.thumbs.delete(pid)}await Store.del('photos',pid)}
+function thumbURL(pid){
+  if(!pid)return'';if(S.thumbs.has(pid))return S.thumbs.get(pid);
+  const p=S.photos.get(pid);if(!p)return'';const u=URL.createObjectURL(p.thumb||p.blob);S.thumbs.set(pid,u);return u;
+}
+const fullURLs=new Map();
+function fullURL(pid){if(fullURLs.has(pid))return fullURLs.get(pid);const p=S.photos.get(pid);if(!p)return'';const u=URL.createObjectURL(p.blob);fullURLs.set(pid,u);return u}
+
+/* ============ containers / paths ============ */
+function byCode(code){for(const c of S.containers.values())if(c.code===code)return c;return null}
+function nextCode(type){
+  const pre=TYPES[type].prefix;let max=0;
+  for(const c of S.containers.values()){const m=(c.code||'').match(/^([A-Z])-(\d+)$/);if(m&&m[1]===pre)max=Math.max(max,+m[2])}
+  max=Math.max(max,(S.settings.reserved||{})[pre]||0);
+  return pre+'-'+String(max+1).padStart(3,'0');
+}
+function chain(cid){const out=[];let c=S.containers.get(cid),g=0;while(c&&g++<25){out.unshift(c);c=c.parentId?S.containers.get(c.parentId):null}return out}
+function pathText(cid){const ch=chain(cid);if(!ch.length)return'Nog geen plaats';const root=ch[0];return(root.locationText?root.locationText+' › ':'')+ch.map(c=>c.name||c.code).join(' › ')}
+function pathHTML(cid,{self=true}={}){
+  let ch=chain(cid);if(!self)ch=ch.slice(0,-1);
+  const parts=[];if(ch[0]&&ch[0].locationText)parts.push(`<span>📍 ${esc(ch[0].locationText)}</span>`);
+  for(const c of ch)parts.push(`<a href="#" data-go="container" data-id="${c.id}">${esc(c.name||c.code)}</a>`);
+  return`<div class="path">${parts.join('<span class="sep">›</span>')||'<span>—</span>'}</div>`;
+}
+function codeChip(c){return`<span class="code ${c.type}">${TYPES[c.type].emoji} ${esc(c.code)}</span>`}
+function containerItems(cid){return[...S.items.values()].filter(i=>i.containerId===cid)}
+function containerKids(cid){return[...S.containers.values()].filter(c=>c.parentId===cid)}
+function countDeep(cid,seen=new Set()){if(seen.has(cid))return 0;seen.add(cid);let n=containerItems(cid).length;for(const k of containerKids(cid))n+=countDeep(k.id,seen);return n}
+function sortedContainers(){return[...S.containers.values()].sort((a,b)=>(a.code||'').localeCompare(b.code||'',undefined,{numeric:true}))}
+
+/* ============ QR ============ */
+function qrText(code){const b=(S.settings.baseUrl||'').trim();return b?b.replace(/#.*$/,'')+'#q-'+code:'SPS:'+code}
+function qrSVG(text){
+  const q=qrcode(0,'M');q.addData(text);q.make();const n=q.getModuleCount(),m=2;let d='';
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))d+=`M${c+m} ${r+m}h1v1h-1z`;
+  return`<svg viewBox="0 0 ${n+2*m} ${n+2*m}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+}
+function drawQR(ctx,text,x,y,size){
+  const q=qrcode(0,'M');q.addData(text);q.make();const n=q.getModuleCount(),cell=size/(n+4);
+  ctx.fillStyle='#fff';ctx.fillRect(x,y,size,size);ctx.fillStyle='#000';
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))ctx.fillRect(Math.floor(x+(c+2)*cell),Math.floor(y+(r+2)*cell),Math.ceil(cell),Math.ceil(cell));
+}
+function parseCode(t){
+  t=String(t||'').trim();
+  let m=t.match(/(?:#q-|SPS:)([BDL])-?(\d{1,4})\b/i)||t.match(/^([BDL])-?(\d{1,4})$/i);
+  return m?m[1].toUpperCase()+'-'+String(+m[2]).padStart(3,'0'):null;
+}
+async function decodeQRFromBlob(blob){
+  const img=await loadImage(blob);
+  for(const max of[1000,700,1400,500]){
+    const c=toCanvas(img,max),ctx=c.getContext('2d');const d=ctx.getImageData(0,0,c.width,c.height);
+    const r=jsQR(d.data,c.width,c.height,{inversionAttempts:'attemptBoth'});if(r&&r.data)return r.data;
+    await sleep(0);
+  }
+  return null;
+}
+function scanQR({title='Scan een QR-code'}={}){
+  return new Promise(resolve=>{
+    const ov=document.createElement('div');ov.className='scanner';
+    ov.innerHTML=`<div class="top"><b style="font-size:18px">${esc(title)}</b><button class="iconbtn" data-x aria-label="Sluiten">✕</button></div>
+      <div class="view"><video playsinline muted autoplay></video><div class="frame"></div><div class="msg">Camera starten…</div></div>
+      <div class="bottom"><button class="btn primary block" data-photo>${ICON.cam} Foto van QR-code nemen</button>
+      <div class="row"><input class="input grow" placeholder="of typ de code, bv. B-001" autocapitalize="characters"><button class="btn teal" data-ok>OK</button></div></div>`;
+    document.body.append(ov);
+    const video=$('video',ov),msg=$('.msg',ov);let stream=null,raf=0,done=false,frame=0;
+    const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+    const finish=v=>{if(done)return;done=true;cancelAnimationFrame(raf);if(stream)stream.getTracks().forEach(t=>t.stop());ov.remove();resolve(v)};
+    const got=txt=>{const code=parseCode(txt);if(code){try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}finish(code);return true}msg.textContent='QR gelezen, maar dit is geen label van deze app';return false};
+    $('[data-x]',ov).onclick=()=>finish(null);
+    $('[data-ok]',ov).onclick=()=>{const v=$('input',ov).value;const c=parseCode(v);if(c)finish(c);else toast('Ongeldige code — gebruik bv. B-001')};
+    $('[data-photo]',ov).onclick=async()=>{const[f]=await fileInput({capture:true});if(!f)return;msg.innerHTML='<span class="busy"></span> QR zoeken…';const t=await decodeQRFromBlob(f);if(!t){msg.textContent='Geen QR-code gevonden. Probeer dichterbij en scherp.';return}got(t)};
+    const loop=()=>{
+      if(done)return;raf=requestAnimationFrame(loop);if(++frame%3)return;
+      if(video.readyState<2||!video.videoWidth)return;
+      const w=480,h=Math.round(video.videoHeight*w/video.videoWidth);cv.width=w;cv.height=h;cx.drawImage(video,0,0,w,h);
+      const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'});if(r&&r.data)got(r.data);
+    };
+    if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+      navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(s=>{
+        if(done){s.getTracks().forEach(t=>t.stop());return}
+        stream=s;video.srcObject=s;video.play().catch(()=>{});msg.textContent='Richt de camera op het QR-label';loop();
+      }).catch(()=>{msg.textContent='Live camera niet beschikbaar hier — neem een foto van de QR-code.'});
+    }else msg.textContent='Live camera niet beschikbaar — neem een foto van de QR-code.';
+  });
+}
+
+/* ============ images & recognition ============ */
+async function loadImage(blob){
+  const url=URL.createObjectURL(blob);
+  try{const img=new Image();img.src=url;await img.decode();return img}
+  finally{setTimeout(()=>URL.revokeObjectURL(url),3000)}
+}
+function toCanvas(img,max){
+  const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,k=Math.min(1,max/Math.max(w,h));
+  const c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c;
+}
+function squareCanvas(src,size){
+  const w=src.width,h=src.height,m=Math.min(w,h);const c=document.createElement('canvas');c.width=c.height=size;
+  c.getContext('2d').drawImage(src,(w-m)/2,(h-m)/2,m,m,0,0,size,size);return c;
+}
+const canvasBlob=(c,q=.82)=>new Promise(r=>c.toBlob(r,'image/jpeg',q));
+/* handcrafted visual fingerprint: object-weighted colour histogram + spatial edge-orientation histogram */
+function features(src){
+  const N=96,c=squareCanvas(src,N),d=c.getContext('2d',{willReadFrequently:true}).getImageData(0,0,N,N).data;
+  let br=0,bg=0,bb=0,bn=0;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){if(x<5||y<5||x>=N-5||y>=N-5){const i=(y*N+x)*4;br+=d[i];bg+=d[i+1];bb+=d[i+2];bn++}}
+  br/=bn;bg/=bn;bb/=bn;
+  const HB=12,col=new Float32Array(HB*9+4),lum=new Float32Array(N*N),W=new Float32Array(N*N);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const p=y*N+x,i=p*4,r=d[i],g=d[i+1],b=d[i+2];
+    const dist=Math.sqrt((r-br)**2+(g-bg)**2+(b-bb)**2)/441;
+    const fg=Math.min(1,Math.max(0,(dist-.07)/.2));
+    const cx=(x-N/2)/(N/2),cy=(y-N/2)/(N/2),cw=Math.exp(-(cx*cx+cy*cy)/.7);
+    const w=cw*(.15+.85*fg);W[p]=w;
+    const R=r/255,G=g/255,B=b/255,mx=Math.max(R,G,B),mn=Math.min(R,G,B),v=mx,s=mx?(mx-mn)/mx:0;
+    lum[p]=.299*R+.587*G+.114*B;
+    let bin;
+    if(s<.2||v<.13)bin=HB*9+Math.min(3,Math.floor(v*4));
+    else{let h;const dd=mx-mn;if(mx===R)h=((G-B)/dd)%6;else if(mx===G)h=(B-R)/dd+2;else h=(R-G)/dd+4;h=(h*60+360)%360;
+      const hb=Math.floor(h/360*HB)%HB,sb=s<.45?0:s<.75?1:2,vb=v<.4?0:v<.75?1:2;bin=hb*9+sb*3+vb}
+    col[bin]+=w;
+  }
+  let sum=0;for(const v of col)sum+=v;for(let k=0;k<col.length;k++)col[k]/=sum||1;
+  const G3=3,OB=8,gr=new Float32Array(G3*G3*OB+OB),cell=N/G3;
+  for(let y=1;y<N-1;y++)for(let x=1;x<N-1;x++){
+    const p=y*N+x,gx=lum[p+1]-lum[p-1],gy=lum[p+N]-lum[p-N],mag=Math.hypot(gx,gy);if(mag<.02)continue;
+    let a=Math.atan2(gy,gx);if(a<0)a+=Math.PI;const ob=Math.min(OB-1,Math.floor(a/Math.PI*OB));
+    const ci=Math.min(G3-1,Math.floor(y/cell))*G3+Math.min(G3-1,Math.floor(x/cell));
+    gr[ci*OB+ob]+=mag*W[p];gr[G3*G3*OB+ob]+=mag*W[p]*2;
+  }
+  let n2=0;for(const v of gr)n2+=v*v;n2=Math.sqrt(n2)||1;for(let k=0;k<gr.length;k++)gr[k]/=n2;
+  return{c:Array.from(col),g:Array.from(gr)};
+}
+function simFeat(a,b){
+  let inter=0;for(let i=0;i<a.c.length;i++)inter+=Math.min(a.c[i],b.c[i]);
+  let dot=0;for(let i=0;i<a.g.length;i++)dot+=a.g[i]*b.g[i];
+  return .7*inter+.3*dot;
+}
+function cosine(a,b){let s=0;for(let i=0;i<a.length;i++)s+=a[i]*b[i];return s}
+/* optional AI (MobileNet) — loaded from CDN when internet is available */
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('script'));document.head.append(s)})}
+async function loadAI(){
+  if(S.ai||!S.settings.ai||S.aiStatus==='laden')return;
+  S.aiStatus='laden';refreshAI();
+  try{
+    if(!window.tf)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
+    if(!window.mobilenet)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js');
+    const KEY='indexeddb://speelgoed-mobilenet-v2';let m;
+    try{m=await mobilenet.load({version:2,alpha:.5,modelUrl:KEY})}
+    catch(e){m=await Promise.race([mobilenet.load({version:2,alpha:.5}),sleep(30000).then(()=>{throw new Error('timeout')})]);
+      try{await m.model.save(KEY)}catch(err){}}
+    S.ai=m;S.aiStatus='aan';refreshAI();backfillEmbeddings();
+  }catch(e){S.aiStatus='niet beschikbaar';refreshAI()}
+}
+function embed(src){
+  const c=squareCanvas(src,224),t=S.ai.infer(c,true),a=Array.from(t.dataSync());t.dispose();
+  let n=0;for(const v of a)n+=v*v;n=Math.sqrt(n)||1;return a.map(v=>v/n);
+}
+async function backfillEmbeddings(){
+  for(const p of[...S.photos.values()]){
+    if(!S.ai||p.emb||p.owner!=='item')continue;
+    try{const img=await loadImage(p.blob);p.emb=embed(toCanvas(img,448));await Store.put('photos',p)}catch(e){}
+    await sleep(15);
+  }
+}
+function refreshAI(){$$('[data-ai]').forEach(el=>{el.outerHTML=aiBadge()})}
+function aiBadge(){
+  const st=S.aiStatus;
+  if(st==='aan')return'<span class="ai" data-ai>✨ Slimme herkenning aan</span>';
+  if(st==='laden')return'<span class="ai" data-ai><span class="busy" style="width:12px;height:12px;border-width:2px"></span> Slimme herkenning laden…</span>';
+  return'<span class="ai off" data-ai>Beeldvergelijking (zonder AI-model)</span>';
+}
+async function makePhoto(src,owner,ownerId){
+  const img=(src instanceof HTMLCanvasElement)?src:await loadImage(src);
+  const big=toCanvas(img,1280),th=squareCanvas(big,360);
+  const blob=await canvasBlob(big,.82),thumb=await canvasBlob(th,.8);
+  const feat=features(big);let emb=null;if(S.ai&&owner==='item')try{emb=embed(big)}catch(e){}
+  const p={id:uid(),owner,ownerId,blob,thumb,feat,emb,created:Date.now()};
+  await Store.put('photos',p);S.photos.set(p.id,p);return p;
+}
+async function recognize(src){
+  const img=(src instanceof HTMLCanvasElement)?src:await loadImage(src);
+  const c=toCanvas(img,720),f=features(c);let e=null;if(S.ai)try{e=embed(c)}catch(err){}
+  const out=[];
+  for(const it of S.items.values()){
+    let best=-1,bp=null;
+    for(const pid of it.photoIds||[]){
+      const p=S.photos.get(pid);if(!p||!p.feat)continue;
+      let s=simFeat(f,p.feat);if(e&&p.emb)s=.75*cosine(e,p.emb)+.25*s;
+      if(s>best){best=s;bp=pid}
+    }
+    if(bp)out.push({item:it,score:best,pid:bp});
+  }
+  out.sort((a,b)=>b.score-a.score);
+  return{canvas:c,results:out.slice(0,6)};
+}
+
+/* ============ routing ============ */
+const V={};let cur={name:'home',p:{}};
+function go(name,p={},{push=true}={}){if(push)S.hist.push(cur);cur={name,p};render();window.scrollTo(0,0)}
+function replace(name,p={}){cur={name,p};render();window.scrollTo(0,0)}
+function back(){const prev=S.hist.pop();cur=prev||{name:'home',p:{}};render()}
+function tab(name){S.hist=[];go(name,{}, {push:false})}
+function render(){
+  if(S.cleanup){try{S.cleanup()}catch(e){}S.cleanup=null}
+  const r=V[cur.name](cur.p)||{};
+  $('#title').textContent=r.title||'';
+  $('#back').hidden=!S.hist.length;
+  $('#act').innerHTML=r.action||'';
+  const t=r.tab||cur.name;$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  const main=$('#main');main.innerHTML=(Store.mem&&(cur.name==='home'||cur.name==='more')?`<div class="banner">⚠️ Opslag is in deze weergave niet beschikbaar: wat je invoert verdwijnt als je de pagina sluit. Installeer de app op je iPhone om alles te bewaren.</div>`:'')+r.html;
+  r.after&&r.after(main);
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go,{id:g.dataset.id});return}
+});
+$('#back').onclick=back;
+$$('#tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+window.addEventListener('hashchange',handleHash);
+function handleHash(){
+  const code=parseCode(location.hash);if(!code)return false;
+  const c=byCode(code);
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+  if(c){go('container',{id:c.id});return true}
+  render();openCode(code);return true;
+}
+
+/* ============ list renderers ============ */
+function itemTile(it){
+  const pid=(it.photoIds||[])[0],c=S.containers.get(it.containerId);
+  return`<button class="tile" data-go="item" data-id="${it.id}"><div class="ph">${pid?`<img src="${thumbURL(pid)}" alt="" loading="lazy">`:'🧸'}</div>
+    <div class="tx"><div class="nm">${esc(it.name||'Naamloos')}</div><div class="lc">${c?esc(c.code+' · '+(c.name||'')):'<span style="color:var(--coral)">Nog geen plaats</span>'}</div></div></button>`;
+}
+function containerRow(c){
+  const n=countDeep(c.id);
+  return`<button class="li" data-go="container" data-id="${c.id}"><div class="th">${c.photoId?`<img src="${thumbURL(c.photoId)}" alt="">`:TYPES[c.type].emoji}</div>
+    <div class="grow"><div class="row" style="gap:6px">${codeChip(c)}</div><div class="nm" style="margin-top:4px">${esc(c.name||TYPES[c.type].label)}</div>
+    <div class="sub">${c.parentId||c.locationText?esc(pathText(c.id).split(' › ').slice(0,-1).join(' › ')||c.locationText):'Geen locatie'} · ${n} artikel${n===1?'':'s'}</div></div><span class="chev">›</span></button>`;
+}
+function itemRow(it){
+  const pid=(it.photoIds||[])[0];
+  return`<button class="li" data-go="item" data-id="${it.id}"><div class="th">${pid?`<img src="${thumbURL(pid)}" alt="">`:'🧸'}</div>
+    <div class="grow"><div class="nm">${esc(it.name||'Naamloos')}</div><div class="sub">${it.containerId?esc(pathText(it.containerId)):'<span style="color:var(--coral)">Nog geen plaats</span>'}</div></div><span class="chev">›</span></button>`;
+}
+function search(q){
+  const toks=norm(q).split(/\s+/).filter(Boolean);if(!toks.length)return{items:[],containers:[]};
+  const hit=hay=>toks.every(t=>hay.includes(t));
+  const items=[...S.items.values()].filter(i=>hit(norm([i.name,i.description,(i.tags||[]).join(' '),i.containerId?pathText(i.containerId):'',S.containers.get(i.containerId)?.code].join(' '))));
+  const containers=[...S.containers.values()].filter(c=>hit(norm([c.code,c.name,c.description,c.locationText,TYPES[c.type].label,pathText(c.id)].join(' '))));
+  const sc=i=>norm(i.name).startsWith(toks[0])?0:1;
+  items.sort((a,b)=>sc(a)-sc(b)||(a.name||'').localeCompare(b.name||''));
+  return{items,containers};
+}
+
+/* ============ VIEWS ============ */
+V.home=()=>{
+  const nC=S.containers.size,nI=S.items.size;
+  const recent=[...S.items.values()].sort((a,b)=>(b.created||0)-(a.created||0)).slice(0,6);
+  const empty=!nC&&!nI;
+  return{title:'Speelgoed Sorteerder',tab:'home',
+    html:`<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input class="input" id="q" type="search" placeholder="Waar ligt… (bv. dino, lego, B-003)" autocomplete="off"></div>
+      <div id="res"></div>
+      <div id="homeRest">
+      <div class="big-actions">
+        <button class="big-act coral" data-act="rec"><span class="ic">${ICON.cam}</span>Wat is dit?<small>Foto nemen → waar hoort het</small></button>
+        <button class="big-act teal" data-act="scan"><span class="ic">${ICON.qr}</span>QR scannen<small>Open een bak, doos of locatie</small></button>
+      </div>
+      <div class="stats">${['bak','doos','locatie'].map(t=>{const n=[...S.containers.values()].filter(c=>c.type===t).length;return`<span class="pill">${TYPES[t].emoji} ${n} ${n===1?TYPES[t].label.toLowerCase():TYPES[t].plural.toLowerCase()}</span>`}).join('')}<span class="pill">🧸 ${nI} artikel${nI===1?'':'s'}</span></div>
+      ${empty?`<div class="card" style="margin-top:12px"><h2>Zo begin je</h2><ol class="steps">
+        <li>Maak <b>locaties</b> (bv. Speelkamer – kast) en <b>bakken/dozen</b>, elk met een foto.</li>
+        <li>Druk de <b>QR-labels</b> af en kleef ze op de bakken.</li>
+        <li>Fotografeer het speelgoed en koppel het aan de juiste bak.</li>
+        <li>Iets gevonden? Tik op <b>Wat is dit?</b> en de app zegt waar het hoort.</li></ol>
+        <div class="row wrap" style="margin-top:8px"><button class="btn primary" data-act="newc">${ICON.qr} QR-codes maken</button><button class="btn soft" data-act="demo">Voorbeelddata laden</button></div></div>`
+      :`${recent.length?`<h3 style="margin:18px 2px 10px;font-weight:900">Recent toegevoegd</h3><div class="grid2">${recent.map(itemTile).join('')}</div>`:''}`}
+      </div>`,
+    after(m){
+      const q=$('#q',m),res=$('#res',m),rest=$('#homeRest',m);
+      q.oninput=()=>{
+        const v=q.value.trim();if(!v){res.innerHTML='';rest.hidden=false;return}
+        rest.hidden=true;const r=search(v);
+        res.innerHTML=(!r.items.length&&!r.containers.length)?`<div class="empty"><div class="e">🔍</div>Niets gevonden voor “${esc(v)}”.<br><button class="btn soft" style="margin-top:12px" data-act="rec2">${ICON.cam} Zoek met een foto</button></div>`:
+          `${r.items.length?`<h3 style="margin:14px 2px 8px;font-weight:900">Artikels (${r.items.length})</h3>${r.items.slice(0,40).map(itemRow).join('')}`:''}
+           ${r.containers.length?`<h3 style="margin:14px 2px 8px;font-weight:900">Bakken, dozen & locaties (${r.containers.length})</h3>${r.containers.map(containerRow).join('')}`:''}`;
+        const b=$('[data-act=rec2]',res);if(b)b.onclick=()=>tab('recognize');
+      };
+      const a=n=>$(`[data-act=${n}]`,m);
+      a('rec').onclick=()=>tab('recognize');
+      a('scan').onclick=async()=>{const code=await scanQR();if(code)openCode(code)};
+      if(a('newc'))a('newc').onclick=()=>go('qrmake',{});
+      if(a('demo'))a('demo').onclick=loadDemo;
+    }};
+};
+function isReserved(code){const r=(S.settings.reserved||{})[code[0]]||0;return +code.slice(2)<=r}
+async function openCode(code){
+  const c=byCode(code);if(c){go('container',{id:c.id});return}
+  if(isReserved(code)){toast('Nieuw label '+code+' — vul het in');go('containerEdit',{code});return}
+  if(await confirmBox(`Code ${code} bestaat nog niet. Nu aanmaken?`,{ok:'Aanmaken'}))go('containerEdit',{code});
+}
+
+V.containers=(p)=>{
+  const f=S.cFilter||'alle';
+  const list=sortedContainers().filter(c=>f==='alle'||c.type===f);
+  return{title:'Bakken & locaties',tab:'containers',
+    action:`<button class="iconbtn" data-act="scan" aria-label="Scan">${ICON.qr}</button><button class="iconbtn coral" data-act="new" aria-label="Nieuw">${ICON.plus}</button>`,
+    html:`<button class="big-act teal" style="width:100%;min-height:0;flex-direction:row;align-items:center;margin-bottom:12px" data-act="qrmake"><span class="ic">${ICON.qr}</span><span>QR-codes maken<br><small>Nieuwe bak/doos/locatie of een reeks lege labels</small></span></button>
+      <div class="seg" style="margin-bottom:12px">${['alle','locatie','bak','doos'].map(k=>`<button data-f="${k}" class="${f===k?'on':''}">${k==='alle'?'Alle':TYPES[k].plural}</button>`).join('')}</div>
+      ${list.length?list.map(containerRow).join(''):`<div class="empty"><div class="e">🧺</div>Nog niets hier.<br>Maak een bak, doos of locatie aan.</div>`}
+      <div class="row" style="margin-top:14px"><button class="btn block" data-act="labels">🏷️ QR-labels afdrukken</button></div>`,
+    after(m){
+      $$('[data-f]',m).forEach(b=>b.onclick=()=>{S.cFilter=b.dataset.f;render()});
+      $('[data-act=labels]',m).onclick=()=>go('labels',{});
+      $('[data-act=qrmake]',m).onclick=()=>go('qrmake',{});
+      $('#act [data-act=new]').onclick=()=>go('containerEdit',{type:f==='alle'?'bak':f});
+      $('#act [data-act=scan]').onclick=async()=>{const code=await scanQR();if(code)openCode(code)};
+    }};
+};
+
+V.container=(p)=>{
+  const c=S.containers.get(p.id);if(!c)return{title:'Niet gevonden',html:'<div class="empty">Deze bak bestaat niet meer.</div>'};
+  const items=containerItems(c.id),kids=containerKids(c.id);
+  return{title:c.name||c.code,tab:'containers',
+    action:`<button class="iconbtn" data-act="edit" aria-label="Bewerken">${ICON.edit}</button>`,
+    html:`${c.photoId?`<img class="hero-photo" src="${fullURL(c.photoId)}" alt="">`:''}
+      <div class="card" style="margin-top:12px"><div class="row" style="justify-content:space-between">${codeChip(c)}<span class="muted small">${TYPES[c.type].label}</span></div>
+        <h2 style="margin-top:8px;font-size:22px">${esc(c.name||TYPES[c.type].label)}</h2>
+        ${c.description?`<div style="white-space:pre-wrap">${esc(c.description)}</div>`:''}
+        <div style="margin-top:10px"><div class="small muted" style="font-weight:800;margin-bottom:4px">${c.type==='locatie'?'Plaats':'Staat in / op'}</div>${c.parentId||c.locationText?pathHTML(c.id,{self:false}):'<span class="muted small">Nog geen locatie gekozen</span>'}</div>
+      </div>
+      <div class="qrbox card">${qrSVG(qrText(c.code))}<div class="grow"><div style="font-weight:900;font-size:24px">${esc(c.code)}</div><div class="small muted">Kleef dit label op de ${TYPES[c.type].label.toLowerCase()}.</div><button class="btn sm soft" style="margin-top:8px" data-act="label">🏷️ Label afdrukken</button></div></div>
+      <div class="row" style="margin:6px 0 12px"><button class="btn primary grow" data-act="add">${ICON.cam} Speelgoed toevoegen</button>${c.type!=='doos'?`<button class="btn" data-act="addc">${ICON.plus} Bak hierin</button>`:''}</div>
+      ${kids.length?`<h3 style="margin:8px 2px">Hierin (${kids.length})</h3>${kids.map(containerRow).join('')}`:''}
+      <h3 style="margin:14px 2px 10px">Artikels (${items.length})</h3>
+      ${items.length?`<div class="grid2">${items.map(itemTile).join('')}</div>`:`<div class="empty" style="padding:14px"><div class="e">🧸</div>Nog geen speelgoed gekoppeld.</div>`}`,
+    after(m){
+      $('#act [data-act=edit]').onclick=()=>go('containerEdit',{id:c.id});
+      $('[data-act=label]',m).onclick=()=>go('labels',{only:[c.id]});
+      $('[data-act=add]',m).onclick=()=>go('itemEdit',{containerId:c.id,quick:true});
+      const ac=$('[data-act=addc]',m);if(ac)ac.onclick=()=>go('containerEdit',{parentId:c.id,type:'bak'});
+    }};
+};
+
+V.containerEdit=(p)=>{
+  const ex=p.id?S.containers.get(p.id):null;
+  const pre=p.code?PREFIX2TYPE[p.code[0]]:null;
+  const d=p._draft||(p._draft=ex?{...ex}:{id:uid(),type:pre||p.type||'bak',code:p.code||'',name:'',description:'',photoId:null,parentId:p.parentId||null,locationText:'',created:Date.now(),_new:true});
+  if(!d.code)d.code=nextCode(d.type);
+  const parent=d.parentId?S.containers.get(d.parentId):null;
+  return{title:ex?'Bewerken':'Nieuw',tab:'containers',
+    html:`<div class="seg">${Object.keys(TYPES).map(k=>`<button data-t="${k}" class="${d.type===k?'on':''}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div>
+      <label class="f">Foto</label>
+      <div class="row">${d.photoId?`<img src="${thumbURL(d.photoId)}" style="width:96px;height:96px;border-radius:14px;object-fit:cover">`:`<div style="width:96px;height:96px;border-radius:14px;background:#F3EADF;display:grid;place-items:center;font-size:34px">${TYPES[d.type].emoji}</div>`}
+        <div class="stack grow"><button class="btn sm primary block" data-act="cam">${ICON.cam} Foto nemen</button><button class="btn sm block" data-act="lib">Uit bibliotheek</button></div></div>
+      <label class="f">Naam</label><input class="input" id="nm" value="${esc(d.name)}" placeholder="${d.type==='locatie'?'bv. Speelkamer – kast links':'bv. Bak voertuigen'}">
+      <label class="f">QR-code</label><input class="input" id="cd" value="${esc(d.code)}" autocapitalize="characters">
+      <label class="f">${d.type==='locatie'?'Ligt in (andere locatie, optioneel)':'Staat in / op (locatie of andere bak)'}</label>
+      <button class="li" data-act="parent" style="margin:0"><div class="th">${parent?(parent.photoId?`<img src="${thumbURL(parent.photoId)}">`:TYPES[parent.type].emoji):'➕'}</div><div class="grow"><div class="nm">${parent?esc(parent.name||parent.code):'Kies een locatie'}</div><div class="sub">${parent?esc(parent.code+' · '+pathText(parent.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
+      <label class="f">Locatie-omschrijving (vrije tekst)</label><input class="input" id="lt" value="${esc(d.locationText)}" placeholder="bv. Zolder, 2de rek bovenaan">
+      <label class="f">Omschrijving / inhoud</label><textarea class="input" id="ds" placeholder="bv. Alle auto's, treinen en vliegtuigjes">${esc(d.description)}</textarea>
+      <button class="btn primary block" style="margin-top:16px" data-act="save">Bewaren</button>
+      ${ex?`<button class="btn danger block" style="margin-top:10px" data-act="del">Verwijderen</button>`:''}`,
+    after(m){
+      const sync=()=>{d.name=$('#nm',m).value.trim();d.code=$('#cd',m).value.trim().toUpperCase();d.locationText=$('#lt',m).value.trim();d.description=$('#ds',m).value.trim()};
+      $$('[data-t]',m).forEach(b=>b.onclick=()=>{sync();const old=d.type;d.type=b.dataset.t;if(d._new&&!p.code&&d.code&&d.code[0]===TYPES[old].prefix)d.code=nextCode(d.type);render()});
+      const addPhoto=async cap=>{const[f]=await fileInput({capture:cap});if(!f)return;sync();toast('Foto verwerken…',900);const ph=await makePhoto(f,'container',d.id);if(d.photoId&&d.photoId!==ex?.photoId)await deletePhoto(d.photoId);d.photoId=ph.id;render()};
+      $('[data-act=cam]',m).onclick=()=>addPhoto(true);
+      $('[data-act=lib]',m).onclick=()=>addPhoto(false);
+      $('[data-act=parent]',m).onclick=async()=>{sync();const r=await pickContainer({exclude:d.id,title:'Waar staat dit?',allowNone:true});if(r===undefined)return;d.parentId=r;render()};
+      $('[data-act=save]',m).onclick=async()=>{
+        sync();const code=parseCode(d.code);
+        if(!code){toast('Code moet zijn als B-001, D-001 of L-001');return}
+        const other=byCode(code);if(other&&other.id!==d.id){toast('Code '+code+' is al in gebruik');return}
+        if(d.parentId&&chain(d.parentId).some(x=>x.id===d.id)){toast('Dat zou een kringloop maken');return}
+        d.code=code;if(!d.name)d.name=TYPES[d.type].label+' '+code;
+        const{_new,...obj}=d;
+        if(ex&&ex.photoId&&ex.photoId!==obj.photoId)await deletePhoto(ex.photoId);
+        await saveContainer(obj);toast('Bewaard ✓');
+        if(ex)back();else replace('container',{id:obj.id});
+      };
+      S.cleanup=()=>{
+        if(cur.name==='containerEdit'&&cur.p===p)return;
+        const saved=S.containers.get(d.id);
+        if(d.photoId&&d.photoId!==(saved&&saved.photoId)&&d.photoId!==(ex&&ex.photoId))deletePhoto(d.photoId);
+      };
+      const del=$('[data-act=del]',m);if(del)del.onclick=async()=>{
+        const n=containerItems(d.id).length,k=containerKids(d.id).length;
+        if(!await confirmBox(`${d.code} verwijderen?${n||k?` ${n} artikel(s) en ${k} bak(ken) erin krijgen “geen plaats”.`:''}`,{ok:'Verwijderen',danger:true}))return;
+        for(const it of containerItems(d.id)){it.containerId=null;await saveItem(it)}
+        for(const kc of containerKids(d.id)){kc.parentId=null;await saveContainer(kc)}
+        if(ex.photoId)await deletePhoto(ex.photoId);
+        S.containers.delete(d.id);await Store.del('containers',d.id);toast('Verwijderd');S.hist=[];tab('containers');
+      };
+    }};
+};
+
+function pickContainer({exclude=null,title='Kies een plaats',allowNone=false}={}){
+  // resolves: id | null (no location) | undefined (cancel)
+  return new Promise(resolve=>{
+    let settled=false;const done=v=>{if(!settled){settled=true;resolve(v)}};
+    const banned=new Set();if(exclude){for(const c of S.containers.values())if(chain(c.id).some(x=>x.id===exclude))banned.add(c.id)}
+    const list=sortedContainers().filter(c=>!banned.has(c.id));
+    sheet(`<h2>${esc(title)}</h2>
+      <div class="row" style="margin-bottom:10px"><button class="btn teal grow" data-scan>${ICON.qr} Scan QR-label</button>${allowNone?'<button class="btn" data-none>Geen</button>':''}</div>
+      <input class="input" data-q placeholder="Zoek op naam of code" style="margin-bottom:10px">
+      <div data-l></div>`,{onMount:(el,close)=>{
+        const L=$('[data-l]',el);
+        const draw=q=>{const t=norm(q);const r=list.filter(c=>!t||norm(c.code+' '+c.name+' '+pathText(c.id)).includes(t));
+          L.innerHTML=r.length?r.map(c=>containerRow(c).replace('data-go="container"','data-pick')).join(''):'<div class="empty">Geen resultaten</div>';
+          $$('[data-pick]',L).forEach(b=>b.onclick=e=>{e.stopPropagation();close();done(b.dataset.id)})};
+        draw('');$('[data-q]',el).oninput=e=>draw(e.target.value);
+        const nb=$('[data-none]',el);if(nb)nb.onclick=()=>{close();done(null)};
+        $('[data-scan]',el).onclick=async()=>{const code=await scanQR({title:'Scan het label'});if(!code)return;const c=byCode(code);
+          if(!c){toast(code+' is nog niet ingevuld — open het eerst via QR scannen');return}if(banned.has(c.id)){toast('Kan niet in zichzelf');return}close();done(c.id)};
+      }}).then(()=>done(undefined));
+  });
+}
+
+V.items=()=>{
+  const f=S.iFilter||'alle';
+  let list=[...S.items.values()];if(f==='los')list=list.filter(i=>!i.containerId);
+  const q=S.iQuery||'';if(q){const ids=new Set(search(q).items.map(i=>i.id));list=list.filter(i=>ids.has(i.id))}
+  list.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  return{title:'Artikels',tab:'items',
+    action:`<button class="iconbtn coral" data-act="new" aria-label="Nieuw">${ICON.plus}</button>`,
+    html:`<div class="search" style="margin-bottom:10px">${ICON.search}<input class="input" id="iq" type="search" value="${esc(q)}" placeholder="Zoek speelgoed" autocomplete="off"></div>
+      <div class="seg" style="margin-bottom:12px"><button data-f="alle" class="${f==='alle'?'on':''}">Alles (${S.items.size})</button><button data-f="los" class="${f==='los'?'on':''}">Zonder plaats (${[...S.items.values()].filter(i=>!i.containerId).length})</button></div>
+      ${list.length?`<div class="grid2">${list.map(itemTile).join('')}</div>`:`<div class="empty"><div class="e">🧸</div>${q?'Niets gevonden.':'Nog geen artikels.<br>Tik op + om speelgoed te fotograferen.'}</div>`}`,
+    after(m){
+      $$('[data-f]',m).forEach(b=>b.onclick=()=>{S.iFilter=b.dataset.f;render()});
+      const iq=$('#iq',m);let t;iq.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{S.iQuery=iq.value;render();const n=$('#iq');n.focus();n.setSelectionRange(n.value.length,n.value.length)},250)};
+      $('#act [data-act=new]').onclick=()=>go('itemEdit',{});
+    }};
+};
+
+V.item=(p)=>{
+  const it=S.items.get(p.id);if(!it)return{title:'Niet gevonden',html:'<div class="empty">Dit artikel bestaat niet meer.</div>'};
+  const c=S.containers.get(it.containerId);
+  return{title:it.name||'Artikel',tab:'items',
+    action:`<button class="iconbtn" data-act="edit" aria-label="Bewerken">${ICON.edit}</button>`,
+    html:`${(it.photoIds||[]).length?`<div class="photos">${it.photoIds.map(pid=>`<img src="${fullURL(pid)}" alt="">`).join('')}</div>`:''}
+      ${p.found?`<div class="banner" style="background:var(--teal2);color:#0B6F64;margin-top:12px">✅ Herkend! Leg het terug op deze plaats:</div>`:''}
+      <div style="margin-top:12px">${whereCard(c)}</div>
+      <div class="card" style="margin-top:12px"><h2 style="font-size:22px">${esc(it.name||'Naamloos')}</h2>
+        ${it.description?`<div style="white-space:pre-wrap">${esc(it.description)}</div>`:'<div class="muted small">Geen omschrijving</div>'}
+        ${(it.tags||[]).length?`<div style="margin-top:10px">${it.tags.map(t=>`<span class="pill">#${esc(t)}</span>`).join('')}</div>`:''}
+      </div>
+      <div class="row"><button class="btn teal grow" data-act="move">${ICON.qr} Verplaatsen</button><button class="btn grow" data-act="photo">${ICON.cam} Foto erbij</button></div>`,
+    after(m){
+      $('#act [data-act=edit]').onclick=()=>go('itemEdit',{id:it.id});
+      $('[data-act=move]',m).onclick=async()=>{const r=await pickContainer({title:'Waar ligt het nu?',allowNone:true});if(r===undefined)return;it.containerId=r;await saveItem(it);toast(r?'Verplaatst naar '+S.containers.get(r).code:'Plaats verwijderd');render()};
+      $('[data-act=photo]',m).onclick=async()=>{const[f]=await fileInput({capture:true});if(!f)return;const ph=await makePhoto(f,'item',it.id);it.photoIds=[...(it.photoIds||[]),ph.id];await saveItem(it);toast('Foto toegevoegd');render()};
+      const w=$('.where',m);if(w&&c)w.onclick=()=>go('container',{id:c.id});
+    }};
+};
+function whereCard(c){
+  if(!c)return`<div class="where none"><div class="th">❔</div><div><div class="wl">Hoort in</div><div class="nm">Nog geen plaats</div><div class="pt">Tik op “Verplaatsen” om een bak te kiezen.</div></div></div>`;
+  const above=chain(c.id).slice(0,-1),root=chain(c.id)[0];
+  const pt=[root&&root.locationText,...above.map(x=>x.name||x.code)].filter(Boolean).join(' › ');
+  return`<div class="where"><div class="th">${c.photoId?`<img src="${thumbURL(c.photoId)}" alt="">`:TYPES[c.type].emoji}</div><div class="grow"><div class="wl">Hoort in ${TYPES[c.type].label.toLowerCase()} ${esc(c.code)}</div><div class="nm">${esc(c.name||c.code)}</div>${pt?`<div class="pt">📍 ${esc(pt)}</div>`:''}</div><span style="font-size:24px">›</span></div>`;
+}
+
+V.itemEdit=(p)=>{
+  const ex=p.id?S.items.get(p.id):null;
+  const d=p._draft||(p._draft=ex?{...ex,photoIds:[...(ex.photoIds||[])],_tags:(ex.tags||[]).join(', ')}:{id:uid(),name:'',description:'',_tags:'',photoIds:[],containerId:p.containerId||null,created:Date.now(),_new:true});
+  if(!p._init&&p.seedPhotoId){d.photoIds.push(p.seedPhotoId);S.photos.get(p.seedPhotoId).ownerId=d.id;Store.put('photos',S.photos.get(p.seedPhotoId))}
+  p._init=true;p._added=p._added||[];
+  const c=S.containers.get(d.containerId);
+  return{title:ex?'Artikel bewerken':'Nieuw artikel',tab:'items',
+    html:`<label class="f" style="margin-top:4px">Foto's <span style="font-weight:700">(één of meer kanten — mag ook zonder)</span></label>
+      <div class="ph-edit">${d.photoIds.map(pid=>`<div class="p"><img src="${thumbURL(pid)}"><button data-rm="${pid}" aria-label="Verwijder">✕</button></div>`).join('')}
+        <div class="add" data-act="cam"><div><b>📷</b>Foto</div></div><div class="add" data-act="lib"><div><b>🖼️</b>Bibliotheek</div></div></div>
+      <label class="f">Naam</label><input class="input" id="nm" value="${esc(d.name)}" placeholder="bv. Rode raceauto">
+      <label class="f">Hoort in</label>
+      <button class="li" data-act="where" style="margin:0"><div class="th">${c?(c.photoId?`<img src="${thumbURL(c.photoId)}">`:TYPES[c.type].emoji):'➕'}</div><div class="grow"><div class="nm">${c?esc(c.code+' · '+(c.name||'')):'Kies bak, doos of locatie'}</div><div class="sub">${c?esc(pathText(c.id)):'of scan het QR-label'}</div></div><span class="chev">›</span></button>
+      <label class="f">Omschrijving</label><textarea class="input" id="ds" placeholder="bv. Hoort bij de garage-set, 4 wieltjes">${esc(d.description)}</textarea>
+      <label class="f">Trefwoorden (komma's)</label><input class="input" id="tg" value="${esc(d._tags)}" placeholder="auto, rood, hot wheels">
+      <button class="btn primary block" style="margin-top:16px" data-act="save">Bewaren</button>
+      ${!ex&&d.containerId?`<button class="btn soft block" style="margin-top:10px" data-act="savenext">Bewaren & volgende in ${esc(c?c.code:'')}</button>`:''}
+      ${ex?`<button class="btn danger block" style="margin-top:10px" data-act="del">Artikel verwijderen</button>`:''}`,
+    after(m){
+      const sync=()=>{d.name=$('#nm',m).value.trim();d.description=$('#ds',m).value.trim();d._tags=$('#tg',m).value};
+      const add=async cap=>{const fs=await fileInput({capture:cap,multiple:!cap});if(!fs.length)return;sync();toast('Foto'+(fs.length>1?"'s":'')+' verwerken…',1200);
+        for(const f of fs){const ph=await makePhoto(f,'item',d.id);d.photoIds.push(ph.id);p._added.push(ph.id)}render()};
+      $('[data-act=cam]',m).onclick=()=>add(true);$('[data-act=lib]',m).onclick=()=>add(false);
+      $$('[data-rm]',m).forEach(b=>b.onclick=()=>{sync();const pid=b.dataset.rm;d.photoIds=d.photoIds.filter(x=>x!==pid);(p._removed=p._removed||[]).push(pid);render()});
+      $('[data-act=where]',m).onclick=async()=>{sync();const r=await pickContainer({title:'Waar hoort het?',allowNone:true});if(r===undefined)return;d.containerId=r;render()};
+      const save=async next=>{
+        sync();const{_new,_tags,...obj}=d;obj.tags=_tags.split(',').map(s=>s.trim()).filter(Boolean);
+        if(!obj.name)obj.name=obj.tags[0]?obj.tags[0][0].toUpperCase()+obj.tags[0].slice(1):'Artikel '+(S.items.size+1);
+        for(const pid of p._removed||[])await deletePhoto(pid);
+        await saveItem(obj);toast('Bewaard ✓');
+        if(next)replace('itemEdit',{containerId:obj.containerId,quick:true});
+        else if(ex)back();else replace('item',{id:obj.id});
+      };
+      $('[data-act=save]',m).onclick=()=>save(false);
+      const sn=$('[data-act=savenext]',m);if(sn)sn.onclick=()=>save(true);
+      const del=$('[data-act=del]',m);if(del)del.onclick=async()=>{
+        if(!await confirmBox(`“${d.name||'Artikel'}” verwijderen?`,{ok:'Verwijderen',danger:true}))return;
+        for(const pid of new Set([...(ex.photoIds||[]),...d.photoIds]))await deletePhoto(pid);
+        S.items.delete(d.id);await Store.del('items',d.id);toast('Verwijderd');S.hist=[];tab('items');
+      };
+      S.cleanup=()=>{ // leaving the editor: drop photos that were never saved
+        if(cur.name==='itemEdit'&&cur.p===p)return;
+        const saved=S.items.get(d.id),keep=new Set(saved?saved.photoIds:[]);
+        for(const pid of[...p._added,...(p.seedPhotoId?[p.seedPhotoId]:[])])if(!keep.has(pid))deletePhoto(pid);
+      };
+    }};
+};
+
+V.recognize=(p)=>{
+  const R=S.lastResult;const tests=S.demoTests;
+  return{title:'Wat is dit?',tab:'recognize',
+    html:`<div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><h2>Neem een foto van het speelgoed</h2></div>
+      <div class="muted small" style="margin-bottom:10px">De app vergelijkt je foto met alle artikelfoto's en zegt waar het hoort. Leg het speelgoed op een rustige achtergrond.</div>
+      <div class="row"><button class="btn primary grow" data-act="cam">${ICON.cam} Foto nemen</button><button class="btn" data-act="lib">🖼️</button></div>
+      <div style="margin-top:10px">${aiBadge()}</div>
+      ${tests&&tests.length?`<div style="margin-top:12px"><div class="small muted" style="font-weight:800;margin-bottom:6px">Demo: probeer met een testfoto</div><div class="testrow">${tests.map((t,i)=>`<img src="${t.url}" data-test="${i}" alt="testfoto">`).join('')}</div></div>`:''}
+      </div>
+      <div id="out">${R?resultHTML(R):(!S.items.size?`<div class="empty"><div class="e">📸</div>Voeg eerst artikels met foto's toe,<br>dan kan de app ze herkennen.</div>`:'')}</div>`,
+    after(m){
+      const run=async src=>{const out=$('#out',m);out.innerHTML='<div class="empty"><span class="busy"></span> Vergelijken…</div>';await sleep(30);
+        try{const r=await recognize(src);r.url=r.canvas.toDataURL('image/jpeg',.8);S.lastResult=r;out.innerHTML=resultHTML(r);wire(out)}catch(e){out.innerHTML='<div class="empty">Kon de foto niet lezen.</div>'}};
+      const wire=out=>{
+        $$('[data-yes]',out).forEach(b=>b.onclick=e=>{e.stopPropagation();go('item',{id:b.dataset.yes,found:true})});
+        $$('[data-learn]',out).forEach(b=>b.onclick=async e=>{e.stopPropagation();const it=S.items.get(b.dataset.learn);const ph=await makePhoto(S.lastResult.canvas,'item',it.id);it.photoIds.push(ph.id);await saveItem(it);toast('Foto toegevoegd — herkenning wordt beter');b.disabled=true});
+        const nw=$('[data-new]',out);if(nw)nw.onclick=async()=>{const ph=await makePhoto(S.lastResult.canvas,'item','pending');go('itemEdit',{seedPhotoId:ph.id})};
+      };
+      $('[data-act=cam]',m).onclick=async()=>{const[f]=await fileInput({capture:true});if(f)run(f)};
+      $('[data-act=lib]',m).onclick=async()=>{const[f]=await fileInput({});if(f)run(f)};
+      $$('[data-test]',m).forEach(im=>im.onclick=()=>run(tests[+im.dataset.test].canvas));
+      if(R)wire($('#out',m));
+    }};
+};
+function resultHTML(r){
+  const res=r.results;
+  if(!res.length)return`<div class="card"><div class="row"><img class="qimg" src="${r.url}"><div class="grow">Nog geen artikels met foto's om mee te vergelijken.</div></div><button class="btn primary block" style="margin-top:12px" data-new>${ICON.plus} Nieuw artikel met deze foto</button></div>`;
+  const top=res[0],second=res[1]?res[1].score:0;
+  const pct=s=>Math.max(1,Math.min(99,Math.round((s-.45)/.5*100)));
+  const sure=pct(top.score)>=60&&top.score-second>.06;
+  const c=S.containers.get(top.item.containerId);
+  return`<div class="card match-top"><div class="row" style="align-items:flex-start"><img class="qimg" src="${r.url}" alt="jouw foto"><div class="grow">
+      <div class="small muted" style="font-weight:800">${sure?'Dit is hoogstwaarschijnlijk':'Lijkt het meest op'}</div>
+      <div style="font-size:21px;font-weight:900;line-height:1.15">${esc(top.item.name)}</div>
+      <div class="score"><i style="width:${pct(top.score)}%"></i></div><div class="small muted">${pct(top.score)}% gelijkenis</div></div></div>
+    <div style="margin-top:12px">${whereCard(c).replace('class="where','data-go="container" data-id="'+(c?c.id:'')+'" class="where')}</div>
+    <div class="row" style="margin-top:10px"><button class="btn teal grow" data-yes="${top.item.id}">✓ Ja, dit is het</button><button class="btn sm" data-learn="${top.item.id}" title="Foto bewaren bij dit artikel">+ foto bewaren</button></div></div>
+    ${res.length>1?`<h3 style="margin:14px 2px 8px">Of is het een van deze?</h3>${res.slice(1).map(x=>{const cc=S.containers.get(x.item.containerId);return`<div class="li" style="cursor:default"><div class="th"><img src="${thumbURL(x.pid)}"></div><div class="grow"><div class="nm">${esc(x.item.name)}</div><div class="sub">${cc?esc(cc.code+' · '+pathText(cc.id)):'Geen plaats'} · ${pct(x.score)}%</div></div><button class="btn sm teal" data-yes="${x.item.id}">Dit</button></div>`}).join('')}`:''}
+    <button class="btn soft block" style="margin-top:10px" data-new>${ICON.plus} Staat er niet bij — nieuw artikel met deze foto</button>`;
+}
+
+V.labels=(p)=>{
+  if(p.blank)return blankLabelsView(p);
+  const all=sortedContainers();
+  if(!p._sel)p._sel=new Set(p.only||all.map(c=>c.id));
+  const sel=all.filter(c=>p._sel.has(c.id));
+  return{title:'QR-labels',tab:'containers',
+    html:`<div class="card"><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. In de geïnstalleerde app werkt “Afdrukken” rechtstreeks (AirPrint).</div>
+      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">🖨️ Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div></div>
+      ${all.length?`<div class="row" style="justify-content:space-between;margin:4px 2px 8px"><b>${sel.length} van ${all.length} gekozen</b><button class="btn sm" data-act="toggle">${sel.length===all.length?'Niets':'Alles'}</button></div>
+      ${all.map(c=>`<label class="check"><input type="checkbox" data-c="${c.id}" ${p._sel.has(c.id)?'checked':''}>${codeChip(c)}<span class="grow" style="font-weight:800">${esc(c.name)}</span></label>`).join('')}
+      <h3 style="margin:16px 2px 8px">Voorbeeld</h3><div class="lblgrid">${sel.slice(0,8).map(labelHTML).join('')}</div>`:'<div class="empty">Nog geen bakken of locaties.</div>'}`,
+    after(m){
+      $$('[data-c]',m).forEach(cb=>cb.onchange=()=>{cb.checked?p._sel.add(cb.dataset.c):p._sel.delete(cb.dataset.c);const y=window.scrollY;render();window.scrollTo(0,y)});
+      const tg=$('[data-act=toggle]',m);if(tg)tg.onclick=()=>{if(p._sel.size===all.length)p._sel.clear();else all.forEach(c=>p._sel.add(c.id));render()};
+      $('[data-act=print]',m).onclick=()=>{if(!sel.length)return toast('Kies minstens één label');$('#print-area').innerHTML=`<div class="lblgrid">${sel.map(labelHTML).join('')}</div>`;
+        let ok=true;try{window.print()}catch(e){ok=false}setTimeout(()=>{if(!ok)toast('Afdrukken kan hier niet — gebruik “Als afbeelding”')},300)};
+      $('[data-act=img]',m).onclick=()=>{if(!sel.length)return toast('Kies minstens één label');labelImages(sel)};
+    }};
+};
+function labelHTML(c){return`<div class="lbl">${qrSVG(qrText(c.code))}<div><div class="c">${esc(c.code)}</div><div class="n">${TYPES[c.type].emoji} ${c.name?esc(c.name):TYPES[c.type].label}</div></div></div>`}
+V.qrmake=(p)=>{
+  const t=p.type||'bak',n=p.n||12;
+  return{title:'QR-codes maken',tab:'containers',
+    html:`<div class="card"><h2>Eén nieuwe QR-code</h2><div class="small muted" style="margin-bottom:10px">Maak meteen een bak, doos of locatie aan met foto en omschrijving. De QR-code wordt automatisch gemaakt.</div>
+        <div class="row">${Object.keys(TYPES).map(k=>`<button class="btn grow sm" data-one="${k}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div></div>
+      <div class="card"><h2>Reeks lege labels</h2><div class="small muted">Handig om in één keer af te drukken en op alle bakken te kleven. Daarna scan je een label en vul je foto, naam en locatie in.</div>
+        <label class="f">Soort</label><div class="seg">${Object.keys(TYPES).map(k=>`<button data-t="${k}" class="${t===k?'on':''}">${TYPES[k].emoji} ${TYPES[k].label}</button>`).join('')}</div>
+        <label class="f">Aantal labels</label><div class="row"><button class="btn" data-d="-1">−</button><input class="input" id="n" type="number" min="1" max="96" value="${n}" style="text-align:center;font-weight:900"><button class="btn" data-d="1">+</button></div>
+        <div class="small muted" style="margin-top:8px">Codes: <b>${(()=>{const f=nextCode(t),pre=f[0],st=+f.slice(2);return f+' t/m '+pre+'-'+String(st+n-1).padStart(3,'0')})()}</b></div>
+        <button class="btn primary block" style="margin-top:14px" data-act="make">${ICON.qr} Maak ${n} QR-codes</button></div>
+      ${(S.settings.reserved&&Object.keys(S.settings.reserved).length)?`<div class="small muted" style="padding:0 4px">Eerder gemaakte, nog niet ingevulde labels blijven gereserveerd — een code wordt nooit twee keer gebruikt.</div>`:''}`,
+    after(m){
+      $$('[data-one]',m).forEach(b=>b.onclick=()=>go('containerEdit',{type:b.dataset.one}));
+      $$('[data-t]',m).forEach(b=>b.onclick=()=>{p.type=b.dataset.t;render()});
+      const inp=$('#n',m);const setN=v=>{p.n=Math.max(1,Math.min(96,v|0||1));render()};
+      $$('[data-d]',m).forEach(b=>b.onclick=()=>setN((+inp.value||0)+(+b.dataset.d)));
+      inp.onchange=()=>setN(+inp.value);
+      $('[data-act=make]',m).onclick=async()=>{
+        const k=+inp.value||n;p.n=k;const first=nextCode(t),pre=first[0],st=+first.slice(2);
+        const codes=[];for(let i=0;i<k;i++)codes.push({code:pre+'-'+String(st+i).padStart(3,'0'),type:t,name:''});
+        S.settings.reserved={...(S.settings.reserved||{}),[pre]:st+k-1};await saveSettings();
+        go('labels',{blank:codes});
+      };
+    }};
+};
+function blankLabelsView(p){
+  const L=p.blank;
+  return{title:'Nieuwe QR-labels',tab:'containers',
+    html:`<div class="card"><h2>${L.length} QR-codes klaar</h2><div class="small muted">${esc(L[0].code)} t/m ${esc(L[L.length-1].code)}. Druk ze af, kleef ze op de ${TYPES[L[0].type].plural.toLowerCase()} en scan daarna een label: de app vraagt dan om foto, naam en locatie in te vullen.</div>
+      <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">🖨️ Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div>
+      <button class="btn soft block" style="margin-top:10px" data-act="fill">${ICON.edit} Eerste label nu invullen (${esc(L[0].code)})</button></div>
+      <div class="lblgrid">${L.map(labelHTML).join('')}</div>`,
+    after(m){
+      $('[data-act=print]',m).onclick=()=>{$('#print-area').innerHTML=`<div class="lblgrid">${L.map(labelHTML).join('')}</div>`;let ok=true;try{window.print()}catch(e){ok=false}setTimeout(()=>{if(!ok)toast('Afdrukken kan hier niet — gebruik “Als afbeelding”')},300)};
+      $('[data-act=img]',m).onclick=()=>labelImages(L);
+      $('[data-act=fill]',m).onclick=()=>{const free=L.find(x=>!byCode(x.code));if(!free)return toast('Alle labels zijn al ingevuld');go('containerEdit',{code:free.code})};
+    }};
+}
+async function labelImages(list){
+  const per=24,pages=[];
+  for(let s=0;s<list.length;s+=per){
+    const cv=document.createElement('canvas');cv.width=1240;cv.height=1754;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);
+    const cols=3,rows=8,mx=50,my=60,gw=(cv.width-2*mx)/cols,gh=(cv.height-2*my)/rows;
+    list.slice(s,s+per).forEach((c,i)=>{const cx=mx+(i%cols)*gw,cy=my+Math.floor(i/cols)*gh;
+      x.strokeStyle='#bbb';x.setLineDash([8,6]);x.lineWidth=2;x.strokeRect(cx+6,cy+6,gw-12,gh-12);x.setLineDash([]);
+      const q=gh-36;drawQR(x,qrText(c.code),cx+16,cy+18,q);
+      x.fillStyle='#000';x.font='900 40px Nunito, Arial, sans-serif';x.fillText(c.code,cx+q+26,cy+70);
+      x.font='700 22px Nunito, Arial, sans-serif';wrapText(x,c.name?`${TYPES[c.type].label}: ${c.name}`:`${TYPES[c.type].label}: ……………………`,cx+q+26,cy+104,gw-q-44,26,3)});
+    pages.push(cv.toDataURL('image/png'));
+  }
+  sheet(`<h2>Labels als afbeelding</h2><div class="small muted" style="margin-bottom:10px">Houd de afbeelding ingedrukt → “Bewaar in Foto's” of “Deel”, en druk af op A4.</div>
+    ${pages.map(u=>`<img src="${u}" style="width:100%;border-radius:12px;margin-bottom:10px;box-shadow:0 2px 12px -6px rgba(0,0,0,.3)">`).join('')}
+    <button class="btn primary block" data-sh>Delen / bewaren</button>`,{onMount:(el)=>{
+      $('[data-sh]',el).onclick=async()=>{const files=await Promise.all(pages.map(async(u,i)=>new File([await(await fetch(u)).blob()],`qr-labels-${i+1}.png`,{type:'image/png'})));
+        if(!(await shareOrDownload(files)))toast('Houd de afbeelding ingedrukt om te bewaren')}}});
+}
+function wrapText(x,t,X,Y,w,lh,max){const words=t.split(' ');let line='',n=0;for(const wd of words){const test=line?line+' '+wd:wd;if(x.measureText(test).width>w&&line){x.fillText(line,X,Y);Y+=lh;line=wd;if(++n>=max-1){break}}else line=test}if(line)x.fillText(line,X,Y)}
+async function shareOrDownload(files){
+  try{if(navigator.canShare&&navigator.canShare({files})){await navigator.share({files});return true}}catch(e){if(e&&e.name==='AbortError')return true}
+  try{for(const f of files){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.append(a);a.click();a.remove()}return isTopLevelWeb()}catch(e){return false}
+}
+
+V.more=()=>{
+  const nP=S.photos.size;
+  return{title:'Meer',tab:'more',
+    html:`<div class="card"><h2>Herkenning</h2>
+        <div>${aiBadge()}</div>
+        <div class="small muted" style="margin-top:8px">Met “slimme herkenning” laadt de app eenmalig een klein AI-beeldmodel (± 4 MB, internet nodig). Daarna herkent ze speelgoed veel beter, ook vanuit een andere hoek. Zonder model gebruikt de app kleur- en vormvergelijking (werkt volledig offline).</div>
+        <label class="check" style="margin-top:10px;background:#FFFCF8"><input type="checkbox" id="ai" ${S.settings.ai?'checked':''}><span class="grow">Slimme herkenning gebruiken</span></label>
+        <div class="small muted">Tip: hoe meer foto's per artikel (verschillende kanten), hoe beter de herkenning.</div></div>
+      <div class="card"><h2>QR-codes</h2>
+        <label class="f" style="margin-top:0">Adres van de app (voor de iPhone-camera)</label>
+        <input class="input" id="bu" value="${esc(S.settings.baseUrl)}" placeholder="https://jouwnaam.github.io/speelgoed/">
+        <div class="small muted" style="margin-top:6px">Als dit is ingevuld, opent de gewone iPhone-camera een gescand label meteen in de app. Leeg = code “SPS:B-001” (scan dan via de app). De app leest beide soorten.</div>
+        <button class="btn sm soft" style="margin-top:10px" data-act="bu">Bewaren</button></div>
+      <div class="card"><h2>Back-up</h2><div class="small muted">${S.containers.size} bakken/locaties · ${S.items.size} artikels · ${nP} foto's${Store.mem?' · <b style="color:var(--coral)">tijdelijke opslag</b>':''}</div>
+        <div class="row" style="margin-top:10px"><button class="btn grow" data-act="exp">⬆️ Back-up maken</button><button class="btn grow" data-act="imp">⬇️ Terugzetten</button></div></div>
+      <div class="card"><h2>Installeren op iPhone</h2><ol class="steps"><li>Open het app-adres in <b>Safari</b>.</li><li>Tik op <b>Deel</b> ⬆️ → <b>Zet op beginscherm</b>.</li><li>Open de app via het nieuwe icoon: camera, scannen en afdrukken werken dan volledig.</li></ol></div>
+      <div class="card"><h2>Gegevens</h2><div class="row wrap"><button class="btn soft" data-act="demo">Voorbeelddata laden</button><button class="btn danger" data-act="wipe">Alles wissen</button></div></div>`,
+    after(m){
+      $('#ai',m).onchange=async e=>{S.settings.ai=e.target.checked;await saveSettings();if(S.settings.ai)loadAI();else{S.ai=null;S.aiStatus='uit';refreshAI()}};
+      $('[data-act=bu]',m).onclick=async()=>{S.settings.baseUrl=$('#bu',m).value.trim();await saveSettings();toast('Bewaard ✓')};
+      $('[data-act=exp]',m).onclick=exportBackup;
+      $('[data-act=imp]',m).onclick=importBackup;
+      $('[data-act=demo]',m).onclick=loadDemo;
+      $('[data-act=wipe]',m).onclick=async()=>{if(!await confirmBox('Alles wissen? Dit kan niet ongedaan worden gemaakt.',{ok:'Alles wissen',danger:true}))return;
+        for(const s of['containers','items','photos'])await Store.clear(s);S.containers.clear();S.items.clear();S.photos.clear();S.lastResult=null;S.demoTests=null;toast('Alles gewist');tab('home')};
+    }};
+};
+
+/* ============ backup ============ */
+const blobToDataURL=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)});
+async function exportBackup(){
+  toast('Back-up maken…',1500);
+  const photos=[];for(const p of S.photos.values())photos.push({...p,blob:await blobToDataURL(p.blob),thumb:p.thumb?await blobToDataURL(p.thumb):null});
+  const data={app:'speelgoed-sorteerder',version:1,date:new Date().toISOString(),containers:[...S.containers.values()],items:[...S.items.values()],photos};
+  const name=`speelgoed-backup-${new Date().toISOString().slice(0,10)}.json`;
+  const file=new File([JSON.stringify(data)],name,{type:'application/json'});
+  if(!(await shareOrDownload([file])))toast('Back-up downloaden kan alleen in de geïnstalleerde app');
+}
+async function importBackup(){
+  const i=document.createElement('input');i.type='file';i.accept='application/json,.json';
+  i.onchange=async()=>{const f=i.files[0];if(!f)return;
+    try{const data=JSON.parse(await f.text());if(data.app!=='speelgoed-sorteerder')throw 0;
+      if(!await confirmBox(`Back-up van ${String(data.date).slice(0,10)} terugzetten? Huidige gegevens worden vervangen.`,{ok:'Terugzetten',danger:true}))return;
+      for(const s of['containers','items','photos'])await Store.clear(s);S.containers.clear();S.items.clear();S.photos.clear();
+      for(const c of data.containers)await saveContainer(c);for(const it of data.items)await saveItem(it);
+      for(const p of data.photos){const q={...p,blob:await(await fetch(p.blob)).blob(),thumb:p.thumb?await(await fetch(p.thumb)).blob():null};await Store.put('photos',q);S.photos.set(q.id,q)}
+      toast('Back-up teruggezet ✓');tab('home');
+    }catch(e){toast('Dit is geen geldige back-up')}};
+  i.click();
+}
+
+/* ============ demo data ============ */
+const PAINT={
+  auto(x){x.fillStyle='#E53935';rr(x,-200,-40,400,110,40);x.fill();rr(x,-95,-120,180,95,30);x.fill();x.fillStyle='#BBDEFB';rr(x,-75,-100,65,60,10);x.fill();rr(x,5,-100,60,60,10);x.fill();
+    x.fillStyle='#fff';x.beginPath();x.arc(-10,20,30,0,7);x.fill();x.fillStyle='#E53935';x.font='900 40px Arial';x.textAlign='center';x.fillText('7',-10,34);
+    for(const w of[-115,115]){x.fillStyle='#222';x.beginPath();x.arc(w,75,48,0,7);x.fill();x.fillStyle='#BDBDBD';x.beginPath();x.arc(w,75,20,0,7);x.fill()}},
+  bal(x){x.fillStyle='#1E63D6';x.beginPath();x.arc(0,0,175,0,7);x.fill();x.save();x.clip();x.fillStyle='#fff';x.fillRect(-200,-35,400,70);x.fillStyle='#FDD835';x.beginPath();x.arc(0,0,175,-.35,.35);x.lineTo(0,0);x.fill();x.restore();
+    x.fillStyle='rgba(255,255,255,.35)';x.beginPath();x.ellipse(-70,-90,45,25,-.6,0,7);x.fill()},
+  eend(x){x.fillStyle='#FFD21F';x.beginPath();x.ellipse(-20,60,170,110,0,0,7);x.fill();x.beginPath();x.arc(80,-80,85,0,7);x.fill();
+    x.fillStyle='#FF8F00';x.beginPath();x.moveTo(150,-90);x.lineTo(225,-70);x.lineTo(150,-50);x.fill();x.fillStyle='#222';x.beginPath();x.arc(100,-105,13,0,7);x.fill();
+    x.fillStyle='#F5B800';x.beginPath();x.ellipse(-50,60,80,45,-.3,0,7);x.fill()},
+  dino(x){x.fillStyle='#43A047';x.beginPath();x.ellipse(-10,40,150,90,0,0,7);x.fill();x.beginPath();x.moveTo(100,0);x.quadraticCurveTo(150,-120,170,-140);x.lineTo(210,-120);x.quadraticCurveTo(180,-60,150,40);x.fill();
+    x.beginPath();x.ellipse(195,-140,45,28,.2,0,7);x.fill();x.beginPath();x.moveTo(-140,20);x.quadraticCurveTo(-230,10,-240,90);x.quadraticCurveTo(-200,60,-130,80);x.fill();
+    x.fillStyle='#2E7D32';for(let i=0;i<5;i++){x.beginPath();x.moveTo(-90+i*45,-40);x.lineTo(-70+i*45,-85);x.lineTo(-50+i*45,-40);x.fill()}
+    x.fillStyle='#43A047';x.fillRect(-90,100,40,80);x.fillRect(40,100,40,80);x.fillStyle='#111';x.beginPath();x.arc(205,-148,7,0,7);x.fill()},
+  blokken(x){const C=['#E53935','#1E88E5','#FDD835','#43A047'],L='ABCD';[[-110,40],[10,40],[-50,-80],[130,40]].forEach(([a,b],i)=>{x.fillStyle=C[i];rr(x,a-55,b-55,110,110,12);x.fill();
+    x.fillStyle='rgba(255,255,255,.9)';x.font='900 70px Arial';x.textAlign='center';x.fillText(L[i],a,b+25)})},
+  beer(x){x.fillStyle='#8D5A3B';for(const e of[-70,70]){x.beginPath();x.arc(e,-170,38,0,7);x.fill()}x.beginPath();x.arc(0,-100,95,0,7);x.fill();x.beginPath();x.ellipse(0,90,115,125,0,0,7);x.fill();
+    for(const a of[-125,125]){x.beginPath();x.ellipse(a,60,40,70,a<0?.5:-.5,0,7);x.fill()}x.fillStyle='#D7B08C';x.beginPath();x.ellipse(0,-70,45,35,0,0,7);x.fill();x.beginPath();x.ellipse(0,100,65,70,0,0,7);x.fill();
+    x.fillStyle='#222';for(const e of[-35,35]){x.beginPath();x.arc(e,-120,10,0,7);x.fill()}x.beginPath();x.ellipse(0,-82,14,10,0,0,7);x.fill()},
+  trein(x){x.fillStyle='#1565C0';rr(x,-210,-40,280,120,16);x.fill();x.fillStyle='#E53935';rr(x,40,-150,150,230,16);x.fill();x.fillStyle='#BBDEFB';rr(x,70,-120,90,70,10);x.fill();
+    x.fillStyle='#333';x.fillRect(-170,-130,50,95);x.fillStyle='#FDD835';for(const w of[-150,-40,120]){x.beginPath();x.arc(w,95,45,0,7);x.fill();x.fillStyle='#333';x.beginPath();x.arc(w,95,12,0,7);x.fill();x.fillStyle='#FDD835'}},
+  xylofoon(x){x.fillStyle='#8D6E63';rr(x,-220,-120,30,240,8);x.fill();rr(x,190,-120,30,240,8);x.fill();const C=['#E53935','#FB8C00','#FDD835','#43A047','#1E88E5','#8E24AA'];
+    C.forEach((c,i)=>{x.fillStyle=c;const h=220-i*25;rr(x,-180+i*62,-h/2,50,h,10);x.fill()});x.strokeStyle='#5D4037';x.lineWidth=12;x.beginPath();x.moveTo(-60,170);x.lineTo(120,120);x.stroke();x.fillStyle='#E53935';x.beginPath();x.arc(130,118,20,0,7);x.fill()}
+};
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+function toyCanvas(kind,v){
+  const c=document.createElement('canvas');c.width=c.height=600;const x=c.getContext('2d');
+  x.fillStyle=['#F2ECE3','#E6ECF0','#EDE6DA','#F6F1E7','#E3E8DF'][v%5];x.fillRect(0,0,600,600);
+  x.globalAlpha=.07;x.fillStyle='#000';for(let i=0;i<13;i++)x.fillRect(0,i*48+(v*11)%48,600,3);x.globalAlpha=1;
+  x.save();x.translate(300+[0,-22,25,-12][v%4],300+[0,15,-12,20][v%4]);x.rotate([0,-.2,.25,-.12][v%4]);const s=[.95,.82,1.02,.88][v%4];x.scale(s,s);
+  if(v===3)x.scale(-1,1);PAINT[kind](x);x.restore();
+  x.fillStyle='rgba(0,0,0,.08)';x.beginPath();x.ellipse(300,520,190,22,0,0,7);x.fill();return c;
+}
+function boxCanvas(type,color,label){
+  const c=document.createElement('canvas');c.width=800;c.height=600;const x=c.getContext('2d');
+  x.fillStyle='#EFE7DC';x.fillRect(0,0,800,600);
+  if(type==='locatie'){x.fillStyle='#C8A27A';x.fillRect(120,60,560,500);x.fillStyle='#F7EFE4';for(let i=0;i<3;i++)x.fillRect(145,85+i*160,510,135);
+    const cols=['#FF8A65','#4FC3F7','#FFD54F','#81C784'];for(let i=0;i<3;i++)for(let j=0;j<3;j++){x.fillStyle=cols[(i+j+label.length)%4];rr(x,165+j*165,120+i*160,140,100,12);x.fill()}}
+  else if(type==='doos'){x.fillStyle='#C9965E';x.beginPath();x.moveTo(150,200);x.lineTo(650,200);x.lineTo(620,540);x.lineTo(180,540);x.fill();x.fillStyle='#B07F48';x.beginPath();x.moveTo(150,200);x.lineTo(260,120);x.lineTo(760,120);x.lineTo(650,200);x.fill();x.fillStyle='rgba(240,230,200,.8)';x.fillRect(370,200,60,340)}
+  else{x.fillStyle=color;x.beginPath();x.moveTo(110,170);x.lineTo(690,170);x.lineTo(640,540);x.lineTo(160,540);x.fill();x.fillStyle='rgba(0,0,0,.18)';rr(x,330,215,140,40,20);x.fill();x.fillStyle='rgba(255,255,255,.25)';x.fillRect(110,170,580,22)}
+  x.fillStyle='#fff';rr(x,300,330,200,90,12);x.fill();x.fillStyle='#2A2340';x.font='900 46px Arial';x.textAlign='center';x.fillText(label,400,392);return c;
+}
+async function loadDemo(){
+  if(S.items.size&&!await confirmBox('Voorbeelddata toevoegen aan je bestaande gegevens?',{ok:'Toevoegen'}))return;
+  toast('Voorbeelddata maken…',2500);
+  const mk=async(type,code,name,desc,parent,locText,color)=>{if(byCode(code))code=nextCode(type);const c={id:uid(),type,code,name,description:desc,parentId:parent||null,locationText:locText||'',created:Date.now()};
+    const ph=await makePhoto(boxCanvas(type,color,code),'container',c.id);c.photoId=ph.id;await saveContainer(c);return c};
+  const L1=await mk('locatie','L-001','Speelkamer – grote kast','Witte kast met 3 planken',null,'Speelkamer, links naast het raam');
+  const L2=await mk('locatie','L-002','Zolder – rek','Metalen rek achteraan',null,'Zolder');
+  const L3=await mk('locatie','L-003','Badkamer – mand','',null,'Badkamer');
+  const B1=await mk('bak','B-001','Voertuigen','Auto\'s, treinen, vliegtuigjes',L1.id,'','#FF7043');
+  const B2=await mk('bak','B-002','Knuffels & dieren','',L1.id,'','#4FC3F7');
+  const B3=await mk('bak','B-003','Badspeelgoed','',L3.id,'','#FFD54F');
+  const D1=await mk('doos','D-001','Bouwen & muziek','Blokken en instrumenten',L2.id,'');
+  const items=[['auto','Rode raceauto','Met nummer 7',B1,'auto, rood, race'],['trein','Blauwe trein','Locomotief met rode cabine',B1,'trein, blauw'],['eend','Gele badeend','',B3,'bad, eend, geel'],
+    ['dino','Groene dino','Stegosaurus',B2,'dino, dinosaurus, groen'],['beer','Bruine teddybeer','Knuffel van Juliette',B2,'knuffel, beer'],['blokken','ABC-blokken','4 houten blokken',D1,'blokken, letters, hout'],
+    ['xylofoon','Regenboog-xylofoon','Met stokje',D1,'muziek, xylofoon'],['bal','Strandbal','Opblaasbaar',L2,'bal, strand, buiten']];
+  const tests=[];
+  for(const[k,name,desc,c,tags]of items){
+    const it={id:uid(),name,description:desc,tags:tags.split(',').map(s=>s.trim()),containerId:c.id,photoIds:[],created:Date.now()};
+    for(const v of[0,1]){const ph=await makePhoto(toyCanvas(k,v),'item',it.id);it.photoIds.push(ph.id)}
+    await saveItem(it);
+    const t=toyCanvas(k,v2(k));tests.push({canvas:t,url:t.toDataURL('image/jpeg',.7)});await sleep(0);
+  }
+  S.demoTests=tests.sort(()=>Math.random()-.5);
+  toast('Voorbeelddata geladen ✓');tab('home');
+}
+function v2(k){return k.length%2?2:3}
+
+/* ============ start ============ */
+(async function start(){
+  await Store.init();await loadAll();
+  if(!handleHash())render();
+  if(S.settings.ai)setTimeout(loadAI,1200);
+  if('serviceWorker' in navigator&&isTopLevelWeb()&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
