@@ -223,7 +223,7 @@ textarea.input{min-height:88px;resize:vertical}
 <script>/*JSQR_LIB*/</script>
 <script>
 'use strict';
-const APP_VERSION='1.1.0';
+const APP_VERSION='1.1.1';
 /* ============ helpers ============ */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -886,7 +886,7 @@ V.labels=(p)=>{
   if(!p._sel)p._sel=new Set(p.only||all.map(c=>c.id));
   const sel=all.filter(c=>p._sel.has(c.id));
   return{title:'QR-labels',tab:'containers',
-    html:`<div class="card"><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. In de geïnstalleerde app werkt “Afdrukken” rechtstreeks (AirPrint).</div>
+    html:`<div class="card"><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. Op iPhone maakt “Afdrukken” een PDF die je via het deelmenu afdrukt (AirPrint) of bewaart.</div>
       <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">${ICO.print} Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div></div>
       ${all.length?`<div class="row" style="justify-content:space-between;margin:4px 2px 8px"><b>${sel.length} van ${all.length} gekozen</b><button class="btn sm" data-act="toggle">${sel.length===all.length?'Niets':'Alles'}</button></div>
       ${all.map(c=>`<label class="check"><input type="checkbox" data-c="${c.id}" ${p._sel.has(c.id)?'checked':''}>${codeChip(c)}<span class="grow" style="font-weight:600">${esc(c.name)}</span></label>`).join('')}
@@ -894,8 +894,7 @@ V.labels=(p)=>{
     after(m){
       $$('[data-c]',m).forEach(cb=>cb.onchange=()=>{cb.checked?p._sel.add(cb.dataset.c):p._sel.delete(cb.dataset.c);const y=window.scrollY;render();window.scrollTo(0,y)});
       const tg=$('[data-act=toggle]',m);if(tg)tg.onclick=()=>{if(p._sel.size===all.length)p._sel.clear();else all.forEach(c=>p._sel.add(c.id));render()};
-      $('[data-act=print]',m).onclick=()=>{if(!sel.length)return toast('Kies minstens één label');$('#print-area').innerHTML=`<div class="lblgrid">${sel.map(labelHTML).join('')}</div>`;
-        let ok=true;try{window.print()}catch(e){ok=false}setTimeout(()=>{if(!ok)toast('Afdrukken kan hier niet — gebruik “Als afbeelding”')},300)};
+      $('[data-act=print]',m).onclick=()=>{if(!sel.length)return toast('Kies minstens één label');printLabels(sel)};
       $('[data-act=img]',m).onclick=()=>{if(!sel.length)return toast('Kies minstens één label');labelImages(sel)};
     }};
 };
@@ -933,12 +932,12 @@ function blankLabelsView(p){
       <button class="btn soft block" style="margin-top:10px" data-act="fill">${ICON.edit} Eerste label nu invullen (${esc(L[0].code)})</button></div>
       <div class="lblgrid">${L.map(labelHTML).join('')}</div>`,
     after(m){
-      $('[data-act=print]',m).onclick=()=>{$('#print-area').innerHTML=`<div class="lblgrid">${L.map(labelHTML).join('')}</div>`;let ok=true;try{window.print()}catch(e){ok=false}setTimeout(()=>{if(!ok)toast('Afdrukken kan hier niet — gebruik “Als afbeelding”')},300)};
+      $('[data-act=print]',m).onclick=()=>printLabels(L);
       $('[data-act=img]',m).onclick=()=>labelImages(L);
       $('[data-act=fill]',m).onclick=()=>{const free=L.find(x=>!byCode(x.code));if(!free)return toast('Alle labels zijn al ingevuld');go('containerEdit',{code:free.code})};
     }};
 }
-async function labelImages(list){
+function labelPages(list){
   const per=24,pages=[];
   for(let s=0;s<list.length;s+=per){
     const cv=document.createElement('canvas');cv.width=1240;cv.height=1754;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);
@@ -948,13 +947,60 @@ async function labelImages(list){
       const q=gh-36;drawQR(x,qrText(c.code),cx+16,cy+18,q);
       x.fillStyle='#000';x.font='700 40px Inter, Arial, sans-serif';x.fillText(c.code,cx+q+26,cy+70);
       x.font='500 22px Inter, Arial, sans-serif';wrapText(x,c.name?`${TYPES[c.type].label}: ${c.name}`:`${TYPES[c.type].label}: ……………………`,cx+q+26,cy+104,gw-q-44,26,3)});
-    pages.push(cv.toDataURL('image/png'));
+    pages.push(cv);
   }
+  return pages;
+}
+async function labelImages(list){
+  const pages=labelPages(list).map(c=>c.toDataURL('image/png'));
   sheet(`<h2>Labels als afbeelding</h2><div class="small muted" style="margin-bottom:10px">Houd de afbeelding ingedrukt → “Bewaar in Foto's” of “Deel”, en druk af op A4.</div>
     ${pages.map(u=>`<img src="${u}" style="width:100%;border-radius:12px;margin-bottom:10px;box-shadow:0 2px 12px -6px rgba(0,0,0,.3)">`).join('')}
     <button class="btn primary block" data-sh>Delen / bewaren</button>`,{onMount:(el)=>{
       $('[data-sh]',el).onclick=async()=>{const files=await Promise.all(pages.map(async(u,i)=>new File([await(await fetch(u)).blob()],`qr-labels-${i+1}.png`,{type:'image/png'})));
         if(!(await shareOrDownload(files)))toast('Houd de afbeelding ingedrukt om te bewaren')}}});
+}
+/* ---- printing: desktop -> print dialog; iPhone/iPad/embedded -> PDF via share sheet ---- */
+function isTouchDevice(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent))}
+function pdfFromJpegs(jpegs,wpx,hpx){
+  const enc=new TextEncoder(),parts=[],off=[];let len=0;
+  const push=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};
+  const obj=(id,fn)=>{off[id]=len;push(id+' 0 obj\n');fn();push('\nendobj\n')};
+  const W=595.28,H=841.89,n=jpegs.length,kids=[];for(let i=0;i<n;i++)kids.push((3+3*i)+' 0 R');
+  push('%PDF-1.4\n');
+  obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>push(`<< /Type /Pages /Kids [${kids.join(' ')}] /Count ${n} >>`));
+  jpegs.forEach((b,i)=>{const pg=3+3*i,ct=pg+1,im=pg+2,cs=`q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`;
+    obj(pg,()=>push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${im} 0 R >> >> /Contents ${ct} 0 R >>`));
+    obj(ct,()=>push(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(im,()=>{push(`<< /Type /XObject /Subtype /Image /Width ${wpx} /Height ${hpx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${b.length} >>\nstream\n`);push(b);push('\nendstream')});
+  });
+  const max=2+3*n,xref=len;let t=`xref\n0 ${max+1}\n0000000000 65535 f \n`;
+  for(let i=1;i<=max;i++)t+=String(off[i]).padStart(10,'0')+' 00000 n \n';
+  push(t+`trailer\n<< /Size ${max+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts,{type:'application/pdf'});
+}
+async function labelsPDF(list){
+  const pages=labelPages(list),jpegs=[];
+  for(const c of pages){const b=await canvasBlob(c,.95);jpegs.push(new Uint8Array(await b.arrayBuffer()))}
+  return new File([pdfFromJpegs(jpegs,pages[0].width,pages[0].height)],`qr-labels-${list[0].code}${list.length>1?'-'+list[list.length-1].code:''}.pdf`,{type:'application/pdf'});
+}
+async function printLabels(list){
+  if(!list.length)return toast('Kies minstens één label');
+  if(!isTouchDevice()&&isTopLevelWeb()){
+    $('#print-area').innerHTML=`<div class="lblgrid">${list.map(labelHTML).join('')}</div>`;try{window.print();return}catch(e){}
+  }
+  const t=document.createElement('div');t.className='toast';t.innerHTML='<span class="busy" style="width:14px;height:14px;border-width:2px"></span> PDF maken…';document.body.append(t);
+  let file;try{file=await labelsPDF(list)}finally{t.remove()}
+  const canShare=(()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[file]}))}catch(e){return false}})();
+  const url=URL.createObjectURL(file);
+  sheet(`<h2>Labels klaar om af te drukken</h2>
+    <div class="small muted" style="margin-bottom:14px">${list.length} label${list.length>1?'s':''} op ${Math.ceil(list.length/24)} A4-blad${list.length>24?'en':''}. ${canShare?'Tik op <b>Afdrukken</b> en kies in het deelmenu <b>Druk af</b> — of bewaar de PDF in Bestanden.':'Open de PDF en druk af vanuit het PDF-venster.'}</div>
+    ${canShare?`<button class="btn primary block" data-share>${ICO.print} Afdrukken</button>`:''}
+    <a class="btn ${canShare?'':'primary '}block" style="margin-top:10px" href="${url}" target="_blank" rel="noopener">${ICO.img} PDF openen</a>
+    <button class="btn block" style="margin-top:10px" data-imgs>Als afbeelding bekijken</button>`,{onMount:(el,close)=>{
+      const sb=$('[data-share]',el);if(sb)sb.onclick=async()=>{try{await navigator.share({files:[file],title:'QR-labels'})}catch(e){if(e&&e.name!=='AbortError')toast('Delen lukt hier niet — gebruik “PDF openen”')}};
+      $('[data-imgs]',el).onclick=()=>{close();labelImages(list)};
+    }}).then(()=>setTimeout(()=>URL.revokeObjectURL(url),60000));
 }
 function wrapText(x,t,X,Y,w,lh,max){const words=t.split(' ');let line='',n=0;for(const wd of words){const test=line?line+' '+wd:wd;if(x.measureText(test).width>w&&line){x.fillText(line,X,Y);Y+=lh;line=wd;if(++n>=max-1){break}}else line=test}if(line)x.fillText(line,X,Y)}
 async function shareOrDownload(files){
