@@ -223,7 +223,7 @@ textarea.input{min-height:88px;resize:vertical}
 <script>/*JSQR_LIB*/</script>
 <script>
 'use strict';
-const APP_VERSION='1.1.1';
+const APP_VERSION='1.1.2';
 /* ============ helpers ============ */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -886,7 +886,7 @@ V.labels=(p)=>{
   if(!p._sel)p._sel=new Set(p.only||all.map(c=>c.id));
   const sel=all.filter(c=>p._sel.has(c.id));
   return{title:'QR-labels',tab:'containers',
-    html:`<div class="card"><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. Op iPhone maakt “Afdrukken” een PDF die je via het deelmenu afdrukt (AirPrint) of bewaart.</div>
+    html:`<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 style="margin:0">Afdrukken</h2><span class="pill" style="margin:0">v${APP_VERSION}</span></div><div class="small muted">Kies welke labels je wil afdrukken. Druk af op stickerpapier of gewoon papier en kleef met tape. Op iPhone maakt “Afdrukken” een PDF die je via het deelmenu afdrukt (AirPrint) of bewaart.</div>
       <div class="row" style="margin-top:10px"><button class="btn primary grow" data-act="print">${ICO.print} Afdrukken</button><button class="btn grow" data-act="img">Als afbeelding</button></div></div>
       ${all.length?`<div class="row" style="justify-content:space-between;margin:4px 2px 8px"><b>${sel.length} van ${all.length} gekozen</b><button class="btn sm" data-act="toggle">${sel.length===all.length?'Niets':'Alles'}</button></div>
       ${all.map(c=>`<label class="check"><input type="checkbox" data-c="${c.id}" ${p._sel.has(c.id)?'checked':''}>${codeChip(c)}<span class="grow" style="font-weight:600">${esc(c.name)}</span></label>`).join('')}
@@ -1163,7 +1163,7 @@ async function autoCheck(){
   if(!handleHash())render();
   if(S.settings.ai)setTimeout(loadAI,1200);
   if(isTopLevelWeb())setTimeout(autoCheck,2500);
-  if('serviceWorker' in navigator&&isTopLevelWeb()&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if('serviceWorker' in navigator&&isTopLevelWeb()&&location.protocol==='https:')navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
 })();
 </script>
 </body>
